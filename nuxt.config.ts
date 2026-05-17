@@ -2,6 +2,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-05-17',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
+  ssr: false,
+  nitro: {
+    preset: 'static'
+  },
   components: [
     {
       path: '~/components',
