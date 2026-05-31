@@ -21,4 +21,12 @@
   .mobile-container {
     @apply mx-auto w-full max-w-md px-5 md:max-w-5xl md:px-8;
   }
+
+  .product-hero-text {
+    @apply w-fit max-w-full shrink-0;
+  }
+
+  .product-hero-subtitle {
+    @apply text-base leading-7 text-[#d1d5dc] whitespace-nowrap sm:text-lg md:text-xl md:leading-7;
+  }
 }

@@ -1,106 +1,230 @@
 <script setup lang="ts">
 import type { ProductDetail } from '~/types/product';
-import { getProductPageContent } from '~/mocks/productPages';
+import { productYoutubeMock as content } from '~/mocks/productYoutube';
 
 defineProps<{ product: ProductDetail }>();
 
-const page = getProductPageContent('youtube')!;
+const openFaqIndex = ref<number | null>(null);
+
+function toggleFaq(index: number) {
+  openFaqIndex.value = openFaqIndex.value === index ? null : index;
+}
 </script>
 
 <template>
-  <div class="bg-black text-white">
-    <ProductDarkHero :hero="page.hero" />
+  <div class="bg-white">
+    <!-- Hero -->
+    <section class="relative overflow-hidden bg-[#1a2530] py-16 md:py-20">
+      <div class="mobile-container relative z-10">
+        <div class="product-hero-text">
+        <div class="flex items-center gap-2">
+          <img
+            :src="content.hero.badgeIconSrc"
+            alt=""
+            class="h-8 w-8 shrink-0 object-contain"
+            aria-hidden="true"
+          >
+          <span class="text-base font-semibold text-[#4eb0ad]">
+            {{ content.hero.badge }}
+          </span>
+        </div>
 
-    <section class="py-16 md:py-24">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <span class="inline-flex rounded-full border border-[#00d5be]/30 bg-[#00d5be]/10 px-5 py-2 text-sm font-semibold text-[#00d5be]">WHY YOUTUBE?</span>
-        <h2 class="mt-6 text-3xl font-bold md:text-4xl">유튜브를 시작해야하는 이유?</h2>
-        <p class="mt-6 text-lg text-gray-400">유튜브는 환자가 병원을 선택할 때 가장 중요하게 참고하는 채널입니다.</p>
-      </div>
-    </section>
+        <h1 class="mt-6 text-3xl font-bold leading-tight whitespace-nowrap text-white sm:text-4xl md:text-5xl md:leading-[1.2]">
+          <span>{{ content.hero.titleLine1 }}</span>
+          <span class="text-[#4eb0ad]">{{ content.hero.titleHighlight }}</span>
+        </h1>
 
-    <section class="border-y border-white/10 py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <h2 class="text-2xl font-bold md:text-3xl">
-          병원은 진료도 바쁜데<br>유튜브까지 신경 쓸 시간이 어디 있나요?
-        </h2>
-      </div>
-    </section>
-
-    <section class="py-16">
-      <div class="mx-auto max-w-3xl px-6 text-center">
-        <p class="text-sm font-bold uppercase tracking-widest text-[#00d5be]">병원 마케팅 트렌드 2026</p>
-        <h2 class="mt-6 text-3xl font-bold">
-          <span class="text-[#00d5be]">82%의 환자들이</span><br>병원 선택 전 유튜브로 정보를 검색합니다
-        </h2>
-        <div class="mx-auto mt-10 flex h-32 max-w-md items-end justify-center gap-2">
-          <div v-for="h in [40, 55, 70, 85, 100]" :key="h" class="w-8 rounded-t bg-[#00d5be]" :style="{ height: `${h}%` }" />
+        <p class="product-hero-subtitle mt-6">
+          {{ content.hero.subtitle }}
+        </p>
         </div>
       </div>
     </section>
 
-    <section class="py-16 md:py-24">
-      <div class="mx-auto max-w-5xl px-6 text-center">
-        <p class="text-[#00d5be]">그래서 준비했습니다</p>
-        <h2 class="mt-4 text-3xl font-bold">
-          병원측은 '촬영만' 참여하세요,<br>나머지는 <span class="text-[#00d5be]">월드베스트</span>가 다 합니다
-        </h2>
-        <div class="mt-12 grid gap-6 md:grid-cols-3">
-          <article v-for="item in [
-            { t: '기획/대본 작성', d: '트렌드에 맞는 콘텐츠 기획부터 대본 작성까지' },
-            { t: '촬영/편집', d: '전문 장비와 편집 기술로 고퀄리티 영상 제작' },
-            { t: '채널 관리', d: '업로드부터 댓글 관리, 분석까지 전담' },
-          ]" :key="item.t" class="rounded-2xl border border-white/10 bg-white/5 p-8">
-            <h3 class="text-lg font-bold text-[#00d5be]">{{ item.t }}</h3>
-            <p class="mt-2 text-sm text-gray-400">{{ item.d }}</p>
+    <!-- Intro & Features -->
+    <section class="bg-white py-16 md:py-20">
+      <div class="mobile-container max-w-6xl">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold leading-snug text-[#0a0a0a] md:text-4xl md:leading-[1.3]">
+            <span class="block">{{ content.intro.titleLine1 }}</span>
+            <span class="block">
+              {{ content.intro.titleLine2Prefix }}
+              <span class="text-[#2c9f9c]">{{ content.intro.titleHighlight }}</span>
+              {{ content.intro.titleLine2Suffix }}
+            </span>
+          </h2>
+          <p class="mx-auto mt-6 max-w-3xl text-lg leading-7 text-[#0a0a0a] md:text-xl">
+            {{ content.intro.description }}
+          </p>
+        </div>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          <article
+            v-for="feature in content.features"
+            :key="feature.title"
+            class="rounded-[14px] bg-[#f8f9fa] p-8"
+          >
+            <h3 class="text-xl font-semibold text-[#0d7877]">
+              {{ feature.title }}
+            </h3>
+            <p class="mt-4 text-base leading-6 text-[#364153]">
+              {{ feature.description }}
+            </p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="bg-[#00bba7] py-16 md:py-24">
-      <div class="mx-auto max-w-5xl px-6">
-        <ProductSectionHeader
-          badge="월드베스트만의 시스템"
-          heading="프로답게 만드는"
-          heading-highlight="3가지 포인트"
-          light
-        />
-        <div class="mt-12 grid gap-6 md:grid-cols-3">
-          <article v-for="(item, i) in [
-            { t: '트렌드 분석', d: '최신 유튜브 트렌드를 분석하여 병원에 맞는 콘텐츠를 제안합니다' },
-            { t: '전문 촬영팀', d: '촬영 전문가가 직접 방문하여 고퀄리티 영상을 제작합니다' },
-            { t: '데이터 기반 관리', d: '조회수, 댓글, 구독자 데이터를 분석하여 지속적으로 개선합니다' },
-          ]" :key="item.t" class="rounded-2xl bg-white/10 p-8 text-center">
-            <span class="flex h-12 w-12 mx-auto items-center justify-center rounded-full bg-white text-xl font-bold text-[#00bba7]">{{ i + 1 }}</span>
-            <h3 class="mt-4 font-bold">{{ item.t }}</h3>
-            <p class="mt-2 text-sm text-white/90">{{ item.d }}</p>
+    <!-- Process -->
+    <section class="bg-[#f8f9fa] py-16 md:py-20">
+      <div class="mobile-container max-w-6xl">
+        <div class="text-center">
+          <p class="text-2xl text-[#292929] md:text-3xl">
+            <span>{{ content.process.titleParts[0] }}</span>
+            <span class="mx-1">·</span>
+            <span>{{ content.process.titleParts[1] }}</span>
+            <span class="mx-1">·</span>
+            <span>{{ content.process.titleParts[2] }}</span>
+          </p>
+          <h2 class="mt-2 text-4xl font-bold text-[#292929] md:text-5xl">
+            {{ content.process.titleMain }}
+          </h2>
+        </div>
+
+        <div class="mt-12 flex gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-5 md:overflow-visible">
+          <article
+            v-for="step in content.process.steps"
+            :key="step.step"
+            class="w-[250px] shrink-0 rounded-[14px] border border-[#eee] bg-white p-6 text-center shadow-[0_4px_2px_rgba(0,0,0,0.25)] md:w-auto"
+          >
+            <div class="mx-auto flex h-40 w-40 items-center justify-center">
+              <img
+                :src="step.imageSrc"
+                :alt="step.title"
+                class="max-h-full max-w-full object-contain"
+              >
+            </div>
+            <div class="mx-auto mt-4 flex h-11 w-[125px] items-center justify-center rounded-full bg-[#4eb0ad] text-xl font-bold text-white">
+              STEP {{ step.step }}
+            </div>
+            <h3 class="mt-4 text-lg font-semibold text-[#0a0a0a]">
+              {{ step.title }}
+            </h3>
+            <p class="mt-3 text-sm leading-5 text-[#4a5565]">
+              {{ step.description }}
+            </p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="py-16">
-      <div class="mx-auto max-w-4xl px-6 text-center">
-        <h2 class="text-3xl font-bold">
-          유튜브, 더 이상 미루면<br>경쟁에서 뒤처집니다.
+    <!-- Urgency -->
+    <section class="bg-[#27d8ce] py-16 md:py-24">
+      <div class="mobile-container max-w-6xl">
+        <div class="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <h2 class="text-4xl font-black leading-tight text-black md:text-6xl md:leading-[1.2]">
+              {{ content.urgency.titlePrefix }}
+              <span class="text-white">{{ content.urgency.titleHighlight }}</span>
+            </h2>
+
+            <ul class="mt-12 space-y-10">
+              <li
+                v-for="(point, index) in content.urgency.points"
+                :key="index"
+                class="flex gap-4"
+              >
+                <img
+                  :src="point.iconSrc"
+                  alt=""
+                  class="h-20 w-20 shrink-0 object-contain"
+                  aria-hidden="true"
+                >
+                <p v-if="point.textLine1" class="text-xl leading-relaxed text-[#292929] md:text-2xl">
+                  <span class="block font-medium">{{ point.textLine1 }}</span>
+                  <span class="block font-black">{{ point.textHighlight }}</span>
+                </p>
+                <p v-else class="text-xl leading-relaxed text-[#292929] md:text-2xl">
+                  {{ point.textBefore }}
+                  <span class="font-black">{{ point.textHighlight }}</span>
+                  {{ point.textAfter }}
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="hidden justify-center lg:flex">
+            <img
+              :src="content.urgency.messageSrc"
+              alt=""
+              class="max-w-md object-contain"
+              aria-hidden="true"
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Effects & FAQ -->
+    <section class="bg-[#f8f9fa] py-16 md:py-20">
+      <div class="mobile-container max-w-6xl">
+        <h2 class="text-center text-3xl font-bold md:text-4xl">
+          {{ content.effects.titlePrefix }}
+          <span class="text-[#4eb0ad]">{{ content.effects.titleHighlight }}</span>
         </h2>
-        <div class="mt-10 grid gap-6 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/10 p-8 text-left">
-            <p class="text-3xl">💡</p>
-            <h3 class="mt-4 font-bold">이미 시작한 병원들은</h3>
-            <p class="mt-2 text-gray-400">유튜브로 지속적으로 신규 환자를 유치하고 있습니다</p>
-          </article>
-          <article class="rounded-2xl border border-white/10 p-8 text-left">
-            <p class="text-3xl">⚡</p>
-            <h3 class="mt-4 font-bold">늦기 전에 시작하세요</h3>
-            <p class="mt-2 text-gray-400">1년 뒤엔 더 많은 경쟁자가 생깁니다</p>
+
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
+          <div
+            v-for="stat in content.effects.stats"
+            :key="stat.label"
+            class="text-center"
+          >
+            <p class="text-5xl font-bold text-[#4eb0ad]">
+              {{ stat.value }}
+            </p>
+            <p class="mt-2 text-base text-[#364153]">
+              {{ stat.label }}
+            </p>
+          </div>
+        </div>
+
+        <h2 class="mt-20 text-center text-3xl font-bold text-[#0a0a0a] md:text-4xl">
+          자주 묻는 질문
+        </h2>
+
+        <div class="mx-auto mt-12 max-w-3xl space-y-4">
+          <article
+            v-for="(item, index) in content.faq"
+            :key="item.q"
+            class="overflow-hidden rounded-[10px] border border-[#e5e7eb]"
+          >
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 bg-white px-6 py-4 text-left"
+              :aria-expanded="openFaqIndex === index"
+              @click="toggleFaq(index)"
+            >
+              <span class="text-base font-semibold text-[#0a0a0a]">{{ item.q }}</span>
+              <img
+                src="/images/products/youtube/chevron-down.svg"
+                alt=""
+                class="h-5 w-5 shrink-0 object-contain transition-transform"
+                :class="openFaqIndex === index ? 'rotate-180' : ''"
+                aria-hidden="true"
+              >
+            </button>
+            <div
+              v-show="openFaqIndex === index"
+              class="border-t border-[#e5e7eb] bg-white px-6 py-4"
+            >
+              <p class="text-base leading-6 text-[#364153]">{{ item.a }}</p>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <ProductFaqSection v-if="page.faq?.length" :items="page.faq" />
-    <ProductGradientCta :cta="page.cta" />
+    <!-- CTA -->
+    <CtaSection :cta="content.cta" />
   </div>
 </template>

@@ -1,119 +1,145 @@
 <script setup lang="ts">
 import type { ProductDetail } from '~/types/product';
-import { getProductPageContent } from '~/mocks/productPages';
+import { productAllinoneMock as content } from '~/mocks/productAllinone';
 
 defineProps<{ product: ProductDetail }>();
 
-const page = getProductPageContent('allinone')!;
-const descLines = (d?: string | string[]) => (d ? (Array.isArray(d) ? d : [d]) : []);
+const openFaqIndex = ref<number | null>(null);
+
+function toggleFaq(index: number) {
+  openFaqIndex.value = openFaqIndex.value === index ? null : index;
+}
 </script>
 
 <template>
   <div class="bg-white">
-    <ProductDarkHero :hero="page.hero" />
-
-    <section id="services" class="bg-gradient-to-b from-white to-slate-50 py-16 md:py-24">
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <ProductSectionHeader
-          badge="OUR SERVICES"
-          heading="제공 서비스"
-          sub="병원 마케팅의 모든 것을 전문성과 신뢰로 담았습니다"
-        />
-        <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <article
-            v-for="item in page.cards?.services"
-            :key="item.title"
-            class="rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-lg"
+    <!-- Hero -->
+    <section class="relative overflow-hidden bg-[#1a2530] py-16 md:py-20">
+      <div class="mobile-container relative z-10">
+        <div class="product-hero-text">
+        <div class="flex items-center gap-2">
+          <img
+            :src="content.hero.badgeIconSrc"
+            alt=""
+            class="h-8 w-8 shrink-0 object-contain"
+            aria-hidden="true"
           >
-            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#00bba7] to-[#009689] text-3xl shadow-md">
-              {{ item.icon }}
+          <span class="text-base font-semibold text-[#4eb0ad]">
+            {{ content.hero.badge }}
+          </span>
+        </div>
+
+        <h1 class="mt-6 text-3xl font-bold leading-tight whitespace-nowrap text-white sm:text-4xl md:text-5xl md:leading-[1.2]">
+          <span>{{ content.hero.titleLine1 }}</span>
+          <span class="text-[#00ffea]">{{ content.hero.titleHighlight }}</span>
+        </h1>
+
+        <p class="mt-6 max-w-3xl text-base leading-7 text-white md:text-xl md:leading-8">
+          <span v-for="(line, index) in content.hero.descriptionLines" :key="line">
+            {{ line }}<br v-if="index < content.hero.descriptionLines.length - 1">
+          </span>
+          <span class="text-[#00ffea]">{{ content.hero.descriptionHighlight }}</span>
+        </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strengths -->
+    <section class="bg-white py-16 md:py-20">
+      <div class="mobile-container max-w-6xl">
+        <h2 class="text-center text-3xl font-bold md:text-[30px]">
+          <span class="text-[#4eb0ad]">{{ content.strengths.titleHighlight }}</span>
+          <span class="text-[#0a0a0a]">{{ content.strengths.titleSuffix }}</span>
+        </h2>
+
+        <div class="mt-12 grid gap-6 md:grid-cols-3">
+          <article
+            v-for="item in content.strengths.items"
+            :key="item.title"
+            class="rounded-[14px] bg-[#f8f9fa] px-8 py-8 text-center"
+          >
+            <img
+              src="/images/products/allinone/check-circle.svg"
+              alt=""
+              class="mx-auto h-10 w-10 object-contain"
+              aria-hidden="true"
+            >
+            <h3 class="mt-6 text-xl font-semibold text-[#0a0a0a]">
+              {{ item.title }}
+            </h3>
+            <p class="mt-3 text-base leading-6 text-[#364153]">
+              {{ item.description }}
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Included Services -->
+    <section class="bg-[#f8f9fa] py-16 md:py-20">
+      <div class="mobile-container max-w-5xl">
+        <h2 class="text-center text-3xl font-bold text-[#0a0a0a] md:text-[30px]">
+          {{ content.includedServices.title }}
+        </h2>
+
+        <div class="mt-12 grid gap-4 md:grid-cols-2">
+          <div
+            v-for="item in content.includedServices.items"
+            :key="item"
+            class="flex items-center gap-4 rounded-[10px] bg-white px-4 py-4"
+          >
+            <img
+              src="/images/products/allinone/check.svg"
+              alt=""
+              class="h-6 w-6 shrink-0 object-contain"
+              aria-hidden="true"
+            >
+            <span class="text-base text-[#364153]">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-white py-16 md:py-20">
+      <div class="mobile-container max-w-3xl">
+        <h2 class="text-center text-3xl font-bold text-[#0a0a0a] md:text-[30px]">
+          자주 묻는 질문
+        </h2>
+
+        <div class="mt-12 space-y-4">
+          <article
+            v-for="(item, index) in content.faq"
+            :key="item.q"
+            class="overflow-hidden rounded-[10px] border border-[#e5e7eb]"
+          >
+            <button
+              type="button"
+              class="flex w-full items-center justify-between gap-4 bg-white px-6 py-4 text-left"
+              :aria-expanded="openFaqIndex === index"
+              @click="toggleFaq(index)"
+            >
+              <span class="text-base font-semibold text-[#0a0a0a]">{{ item.q }}</span>
+              <img
+                src="/images/products/allinone/chevron-down.svg"
+                alt=""
+                class="h-5 w-5 shrink-0 object-contain transition-transform"
+                :class="openFaqIndex === index ? 'rotate-180' : ''"
+                aria-hidden="true"
+              >
+            </button>
+            <div
+              v-show="openFaqIndex === index"
+              class="border-t border-[#e5e7eb] bg-[#f8f9fa] px-6 py-4"
+            >
+              <p class="text-base leading-6 text-[#364153]">{{ item.a }}</p>
             </div>
-            <h3 class="font-bold text-[#101828]">{{ item.title }}</h3>
-            <p v-for="line in descLines(item.desc)" :key="line" class="mt-1 text-sm text-[#4a5565]">{{ line }}</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section
-      class="py-16 md:py-24"
-      style="background: linear-gradient(154deg, #0f172b 0%, #162456 50%, #0f172b 100%)"
-    >
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <ProductSectionHeader
-          badge="WHY WE NEED"
-          heading="왜 올인원케어 서비스가 필요한가?"
-          sub="병원 마케팅의 새로운 패러다임을 경험하세요"
-          light
-        />
-        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <article
-            v-for="item in page.cards?.why"
-            :key="item.title"
-            class="rounded-2xl border border-white/10 bg-white/5 p-8 text-center"
-          >
-            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#00bba7] text-2xl">
-              {{ item.icon }}
-            </div>
-            <h3 class="text-lg font-bold text-white">{{ item.title }}</h3>
-            <p v-for="line in descLines(item.desc)" :key="line" class="mt-2 text-sm text-[#d1d5dc]">{{ line }}</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-16 md:py-24">
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <ProductSectionHeader
-          badge="PROCESS"
-          heading="올인원케어 서비스 프로세스"
-          sub="체계적인 6단계 프로세스로 최상의 결과를 만들어냅니다"
-        />
-        <div class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          <article
-            v-for="(item, i) in page.cards?.process"
-            :key="item.title"
-            class="rounded-2xl p-6 text-center text-white"
-            :class="[
-              i === 0 ? 'bg-[#00bba7]' : '',
-              i === 1 ? 'bg-[#2b7fff]' : '',
-              i === 2 ? 'bg-[#9810fa]' : '',
-              i === 3 ? 'bg-[#e60076]' : '',
-              i === 4 ? 'bg-[#fe9a00]' : '',
-              i === 5 ? 'bg-[#00c950]' : '',
-            ]"
-          >
-            <span class="text-2xl font-bold">{{ item.step }}</span>
-            <h3 class="mt-2 font-bold">{{ item.title }}</h3>
-            <p class="mt-1 text-xs opacity-90">{{ item.desc }}</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-slate-50 py-16 md:py-24">
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <ProductSectionHeader
-          badge="RECOMMENDED FOR"
-          heading="이런 병원에 추천합니다"
-          sub="전문가의 도움이 필요한 순간, 월드베스트가 함께합니다"
-        />
-        <div class="mt-12 grid gap-6 md:grid-cols-2">
-          <article
-            v-for="item in page.cards?.recommended"
-            :key="item.title"
-            class="flex gap-4 rounded-2xl border border-gray-200 bg-white p-8 shadow-md"
-          >
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00bba7] font-bold text-white">✓</span>
-            <div>
-              <h3 class="text-xl font-bold text-[#101828]">{{ item.title }}</h3>
-              <p class="mt-2 text-[#4a5565]">{{ item.desc }}</p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <ProductGradientCta :cta="page.cta" />
+    <!-- CTA -->
+    <CtaSection :cta="content.cta" />
   </div>
 </template>

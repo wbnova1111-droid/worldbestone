@@ -12,15 +12,31 @@ export interface NavigationItem {
   icon: 'home' | 'services' | 'company' | 'chat';
 }
 
-export interface ServiceFeature {
+export interface HomeServiceItem {
   title: string;
   description: string;
-  icon: 'plan' | 'brand' | 'star' | 'content' | 'chart';
+  iconSrc: string;
+  href: string;
 }
 
-export interface ReasonItem {
+export interface ProcessStep {
+  step: number;
   title: string;
   description: string;
+  iconSrc: string;
+}
+
+export interface PartnershipStat {
+  value: string;
+  label: string;
+  color: 'teal' | 'blue' | 'purple';
+}
+
+export interface CoreValueItem {
+  icon: string;
+  title: string;
+  description: string;
+  gradient: 'teal' | 'blue' | 'purple';
 }
 
 export interface HomeContent {
@@ -28,36 +44,42 @@ export interface HomeContent {
   consultationUrl: string;
   navigation: NavigationItem[];
   hero: {
-    eyebrow: string;
-    title: string;
-    description: string;
+    subtitle: string;
+    titleHighlight: string;
+    titleSuffix: string;
+    titleGradient: string;
     videoSrc: string;
     posterSrc: string;
     cta: CtaLink;
   };
-  intro: {
+  services: {
     badge: string;
     title: string;
     description: string;
+    items: HomeServiceItem[];
   };
-  services: {
+  process: {
+    badge: string;
     title: string;
-    items: ServiceFeature[];
+    description: string;
+    items: ProcessStep[];
   };
-  reasons: {
+  partnership: {
     title: string;
-    subtitle: string;
-    imageSrc: string;
-    items: ReasonItem[];
+    titleHighlight: string;
+    description: string;
+    stats: PartnershipStat[];
+  };
+  coreValues: {
+    badge: string;
+    title: string;
+    description: string;
+    items: CoreValueItem[];
   };
   cta: {
     title: string;
+    titleHighlight: string;
     description: string;
     button: CtaLink;
-  };
-  footer: {
-    bannerSrc: string;
-    bannerAlt: string;
-    copyright: string;
   };
 }

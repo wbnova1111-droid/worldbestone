@@ -44,6 +44,12 @@ export const productListMock: ProductListItem[] = [
     features: ['콘텐츠 기획 및 제작', '일정 관리', '댓글 관리', '광고 운영'],
   },
   {
+    slug: 'ai-strategy',
+    title: 'AI 분석 · 노출 전략',
+    description: '넓은 노출 환경을 위해 신뢰 데이터를 쌓는 AI 기반 마케팅 전략',
+    features: ['AI 검색 노출', '신뢰 데이터 구축', '통합 채널 전략', '성과 분석'],
+  },
+  {
     slug: 'website',
     title: '홈페이지 제작 및 관리',
     description: '병원 맞춤형 반응형 홈페이지 제작 및 유지보수',
@@ -242,6 +248,27 @@ export const productDetailsMock: Record<string, ProductDetail> = {
       { title: '전문적 이미지', desc: '세련된 홈페이지로 병원의 전문성을 보여줍니다.' },
       { title: 'SEO 최적화', desc: '검색 엔진 최적화로 더 많은 방문자를 유도합니다.' },
       { title: '모바일 대응', desc: '반응형 디자인으로 모든 기기에서 완벽하게 표시됩니다.' },
+    ],
+  ),
+  'ai-strategy': detail(
+    'ai-strategy',
+    'AI 분석 · 노출 전략',
+    'AI EXPOSURE STRATEGY',
+    'AI 검색 환경에 맞춘 병원 노출 및 신뢰 데이터 전략',
+    '/images/products/ai-strategy/hero-laptop.png',
+    '보이는 곳이 많을수록, 선택될 가능성이 높아집니다.',
+    '병원이 더 넓은 검색 환경에서 발견될 수 있도록 올인원 마케팅을 설계합니다.',
+    'ai-strategy',
+    [
+      { title: 'AI 노출', desc: 'AI 검색 환경 대응' },
+      { title: '신뢰 데이터', desc: '채널별 신뢰 축적' },
+      { title: '통합 전략', desc: '검색·SNS·플랫폼 연계' },
+      { title: '분석', desc: '성과 기반 개선' },
+    ],
+    [
+      { title: '넓은 노출', desc: '다양한 검색 환경에서 병원이 발견될 수 있도록 합니다.' },
+      { title: '신뢰 구축', desc: '후기·콘텐츠·플랫폼 데이터로 신뢰를 쌓습니다.' },
+      { title: '통합 관리', desc: '월드베스트가 채널별 전략을 하나로 연결합니다.' },
     ],
   ),
 };

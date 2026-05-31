@@ -10,9 +10,16 @@ export interface ServiceNavItem extends NavLink {
   slug: string;
 }
 
+export interface SiteFooterContact {
+  phone: string;
+  email: string;
+  address: string;
+}
+
 export interface SiteFooter {
-  bannerSrc: string;
-  bannerAlt: string;
+  tagline: string;
+  quickLinks: NavLink[];
+  contact: SiteFooterContact;
   copyright: string;
 }
 

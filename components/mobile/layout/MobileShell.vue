@@ -20,8 +20,11 @@ defineProps<{
       <slot />
     </main>
     <MobileFooter
-      :banner-src="site.footer.bannerSrc"
-      :banner-alt="site.footer.bannerAlt"
+      :logo-src="site.logoSrc"
+      :logo-alt="site.logoAlt"
+      :tagline="site.footer.tagline"
+      :quick-links="site.footer.quickLinks"
+      :contact="site.footer.contact"
       :copyright="site.footer.copyright"
     />
     <BottomNavigation :items="site.bottomNav" />

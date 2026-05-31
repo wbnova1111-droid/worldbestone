@@ -26,5 +26,6 @@ useSeoMeta({
   <ProductMedicalPlatformPage v-else-if="product?.template === 'medical-platform'" :product="product" />
   <ProductWebsitePage v-else-if="product?.template === 'website'" :product="product" />
   <ProductOfflinePage v-else-if="product?.template === 'offline'" :product="product" />
+  <ProductAiStrategyPage v-else-if="product?.template === 'ai-strategy'" :product="product" />
   <ProductDetailDefault v-else-if="product" :product="product" />
 </template>

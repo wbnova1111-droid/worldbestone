@@ -30,6 +30,6 @@ export interface ProductDetail {
   mainDesc: string;
   features: ProductDetailFeature[];
   benefits: ProductDetailBenefit[];
-  /** place | youtube | blog | sns | medical-platform | allinone | website | default */
-  template: 'place' | 'youtube' | 'blog' | 'sns' | 'medical-platform' | 'allinone' | 'website' | 'offline' | 'default';
+  /** place | youtube | blog | sns | medical-platform | allinone | website | offline | ai-strategy | default */
+  template: 'place' | 'youtube' | 'blog' | 'sns' | 'medical-platform' | 'allinone' | 'website' | 'offline' | 'ai-strategy' | 'default';
 }

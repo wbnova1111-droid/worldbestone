@@ -13,9 +13,18 @@ export const siteMock: SiteContent = {
     external: true,
   },
   footer: {
-    bannerSrc: '/images/footer-banner.png',
-    bannerAlt: '월드베스트 마케팅 - 병원 마케팅 올인원 파트너십',
-    copyright: '© 2026 World Best Marketing Agency. All rights reserved.',
+    tagline: '병원 성장을 함께 만드는\n올인원 마케팅 파트너',
+    quickLinks: [
+      { label: '회사 소개', href: '/company' },
+      { label: '병원 마케팅', href: '/hospital-marketing' },
+      { label: '무료 상담하기', href: consultationUrl, external: true },
+    ],
+    contact: {
+      phone: '010-4492-3816',
+      email: 'wbnova@naver.com',
+      address: '경기도 고양시 일산동구 호수로 646-30',
+    },
+    copyright: '© 2026 월드베스트. All rights reserved.',
   },
   headerNav: [
     { label: '회사 소개', href: '/company' },
@@ -29,6 +38,7 @@ export const siteMock: SiteContent = {
     { slug: 'medical-platform', label: '메디컬 플랫폼', href: '/products/medical-platform' },
     { slug: 'offline', label: '오프라인 광고', href: '/products/offline' },
     { slug: 'sns', label: 'SNS 채널 운영', href: '/products/sns' },
+    { slug: 'ai-strategy', label: 'AI 분석 · 노출 전략', href: '/products/ai-strategy' },
     { slug: 'website', label: '홈페이지 제작 및 관리', href: '/products/website' },
   ],
   bottomNav: [
