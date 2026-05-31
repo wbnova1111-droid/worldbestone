@@ -19,9 +19,11 @@ const iconGradients: Record<HomeContent['coreValues']['items'][number]['gradient
         <span class="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white">
           {{ coreValues.badge }}
         </span>
-        <h2 class="mt-6 bg-gradient-to-r from-[#6bffef] to-white bg-clip-text text-2xl font-bold text-transparent md:text-5xl">
-          {{ coreValues.title }}
-        </h2>
+        <div class="mt-6 overflow-x-auto pb-1 md:overflow-visible">
+          <h2 class="mx-auto w-fit bg-gradient-to-r from-[#6bffef] to-white bg-clip-text text-xl font-bold whitespace-nowrap text-transparent sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+            {{ coreValues.title }}
+          </h2>
+        </div>
         <p class="mx-auto mt-4 max-w-2xl text-lg text-[#d1d5dc]">
           {{ coreValues.description }}
         </p>
