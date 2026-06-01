@@ -5,10 +5,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   body {
     @apply bg-white font-sans text-ink antialiased;
+    text-wrap: pretty;
   }
 
   a,
@@ -27,6 +30,12 @@
   }
 
   .product-hero-subtitle {
-    @apply text-base leading-7 text-[#d1d5dc] whitespace-nowrap sm:text-lg md:text-xl md:leading-7;
+    @apply text-base leading-7 text-[#d1d5dc] sm:text-lg md:text-xl md:leading-7;
+  }
+
+  .text-body-ko {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
   }
 }

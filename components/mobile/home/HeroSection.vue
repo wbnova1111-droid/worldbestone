@@ -36,7 +36,7 @@ const isVideoHidden = ref(false);
       <p class="text-sm text-gray-300 md:text-base">
         {{ hero.subtitle }}
       </p>
-      <h1 class="mt-4 text-3xl font-bold leading-tight md:text-5xl md:leading-[1.3]">
+      <h1 class="text-body-ko mt-4 text-3xl font-bold leading-snug md:text-5xl md:leading-[1.3]">
         <span class="text-[#0ed7c5]">{{ hero.titleHighlight }}</span>
         <span class="text-white">{{ hero.titleSuffix }}</span>
         <span class="mt-1 block bg-gradient-to-r from-[#c3fff9] to-[#00d4c2] bg-clip-text text-transparent">

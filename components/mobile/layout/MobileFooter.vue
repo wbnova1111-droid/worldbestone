@@ -21,23 +21,25 @@ defineProps<{
       <div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
         <!-- 브랜드 -->
         <div class="w-full text-left lg:w-[384px] lg:shrink-0">
-          <div class="relative pl-[22px]">
+          <div class="flex items-center gap-3">
             <img
               :src="logoSrc"
               :alt="logoAlt"
-              class="absolute -left-[23px] -top-6 h-[77px] w-[77px] object-contain"
+              width="64"
+              height="64"
+              class="h-14 w-14 shrink-0 object-contain sm:h-16 sm:w-16"
               loading="lazy"
             >
-            <div class="text-[#48aaa9]">
-              <p class="text-[18px] font-bold leading-[15px] tracking-[0.05px]">
+            <div class="min-w-0 text-[#48aaa9]">
+              <p class="text-lg font-bold leading-tight tracking-[0.05px]">
                 WORLD BEST
               </p>
-              <p class="text-[13px] leading-[15px]">
+              <p class="text-[13px] leading-snug">
                 Marketing Agency
               </p>
             </div>
           </div>
-          <p class="mt-4 whitespace-pre-line pl-1 text-base leading-6 text-[#d1d5dc]">
+          <p class="mt-4 whitespace-pre-line text-base leading-relaxed text-[#d1d5dc]">
             {{ tagline }}
           </p>
         </div>

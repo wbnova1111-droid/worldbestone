@@ -16,7 +16,7 @@ defineProps<{
         <h2 class="mt-6 text-3xl font-bold text-[#101828] md:text-[45px] md:leading-tight">
           {{ services.title }}
         </h2>
-        <p class="mx-auto mt-4 max-w-2xl text-base font-medium text-[#4a5565] md:text-lg">
+        <p class="text-body-ko mx-auto mt-4 max-w-2xl text-base font-medium text-[#4a5565] md:text-lg">
           {{ services.description }}
         </p>
       </div>
@@ -39,7 +39,7 @@ defineProps<{
           <h3 class="mt-4 text-lg font-semibold text-[#0a0a0a]">
             {{ item.title }}
           </h3>
-          <p class="mt-1 text-xs leading-5 text-[#4a5565] md:text-sm">
+          <p class="text-body-ko mt-1 text-xs leading-relaxed text-[#4a5565] md:text-sm">
             {{ item.description }}
           </p>
         </NuxtLink>

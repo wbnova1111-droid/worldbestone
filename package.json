@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "latest",
-    "nuxt": "latest",
+    "nuxt": "^4.4.6",
     "typescript": "latest",
     "vue": "latest"
   },

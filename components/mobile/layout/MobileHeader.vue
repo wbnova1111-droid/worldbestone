@@ -41,18 +41,18 @@ watch(() => route.path, closeMenus);
     <div class="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-2 lg:px-8">
       <NuxtLink
         to="/"
-        class="flex shrink-0 items-center gap-3"
+        class="flex min-w-0 items-center gap-2 sm:gap-3"
         :aria-label="`${brandName} 홈`"
         @click="closeMenus"
       >
         <img
           :src="logoSrc"
           :alt="logoAlt"
-          width="64"
-          height="64"
-          class="h-16 w-16 shrink-0 object-cover"
+          width="48"
+          height="48"
+          class="h-10 w-10 shrink-0 object-contain sm:h-12 sm:w-12"
         >
-        <span class="whitespace-nowrap text-xl font-bold tracking-[0.05px] text-[#009689]">
+        <span class="truncate text-base font-bold tracking-[0.05px] text-[#009689] sm:text-xl">
           {{ brandName }}
         </span>
       </NuxtLink>

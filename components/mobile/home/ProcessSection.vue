@@ -16,7 +16,7 @@ defineProps<{
         <h2 class="mt-6 bg-gradient-to-r from-[#c3fff9] to-[#00d4c2] bg-clip-text text-3xl font-bold text-transparent md:text-5xl">
           {{ process.title }}
         </h2>
-        <p class="mx-auto mt-4 max-w-3xl whitespace-pre-line text-base leading-7 text-[#e5e5e5] md:text-lg">
+        <p class="text-body-ko mx-auto mt-4 max-w-3xl whitespace-pre-line text-base leading-7 text-[#e5e5e5] md:text-lg">
           {{ process.description }}
         </p>
       </div>
@@ -35,7 +35,7 @@ defineProps<{
             :class="index % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'"
           >
             <div
-              class="relative rounded-2xl border border-[#4eb0ad] bg-[#1a2530] p-6 pt-10 text-center shadow-[2px_2px_5px_rgba(255,255,255,0.3)]"
+              class="relative rounded-2xl border border-[#4eb0ad] bg-[#1a2530] px-5 py-6 pt-10 text-center shadow-[2px_2px_5px_rgba(255,255,255,0.3)] sm:px-6"
             >
               <span
                 class="absolute -top-4 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-white text-sm font-bold text-[#009689] shadow-lg"
@@ -51,7 +51,7 @@ defineProps<{
               <h3 class="mt-3 text-lg font-bold">
                 {{ item.title }}
               </h3>
-              <p class="mt-2 text-sm leading-6 text-gray-300">
+              <p class="text-body-ko mt-2 text-sm leading-relaxed text-gray-300">
                 {{ item.description }}
               </p>
             </div>
