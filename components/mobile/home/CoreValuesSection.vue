@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { HomeContent } from '~/types/home';
+import type { HomeLegacyContent } from '~/types/homeLegacy';
 
 defineProps<{
-  coreValues: HomeContent['coreValues'];
+  coreValues: HomeLegacyContent['coreValues'];
 }>();
 
-const iconGradients: Record<HomeContent['coreValues']['items'][number]['gradient'], string> = {
+const iconGradients: Record<HomeLegacyContent['coreValues']['items'][number]['gradient'], string> = {
   teal: 'bg-gradient-to-br from-[#00bba7] to-[#009689]',
   blue: 'bg-gradient-to-br from-[#2b7fff] to-[#155dfc]',
   purple: 'bg-gradient-to-br from-[#ad46ff] to-[#9810fa]',

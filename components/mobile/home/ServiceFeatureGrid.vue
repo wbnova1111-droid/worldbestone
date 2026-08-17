@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HomeContent } from '~/types/home';
+import type { HomeLegacyContent } from '~/types/homeLegacy';
 
 defineProps<{
-  services: HomeContent['services'];
+  services: HomeLegacyContent['services'];
 }>();
 </script>
 

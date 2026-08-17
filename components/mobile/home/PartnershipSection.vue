@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { HomeContent } from '~/types/home';
+import type { HomeLegacyContent } from '~/types/homeLegacy';
 
 defineProps<{
-  partnership: HomeContent['partnership'];
+  partnership: HomeLegacyContent['partnership'];
 }>();
 
-const statColors: Record<HomeContent['partnership']['stats'][number]['color'], string> = {
+const statColors: Record<HomeLegacyContent['partnership']['stats'][number]['color'], string> = {
   teal: 'text-[#009689]',
   blue: 'text-[#155dfc]',
   purple: 'text-[#9810fa]',

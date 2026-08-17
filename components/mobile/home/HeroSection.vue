@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { HomeContent } from '~/types/home';
+import type { HomeLegacyContent } from '~/types/homeLegacy';
 
 defineProps<{
-  hero: HomeContent['hero'];
+  hero: HomeLegacyContent['hero'];
 }>();
 
 const isVideoHidden = ref(false);

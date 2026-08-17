@@ -1,5 +1,3 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'light';
-
 export interface CtaLink {
   label: string;
   href: string;
@@ -12,45 +10,100 @@ export interface NavigationItem {
   icon: 'home' | 'services' | 'company' | 'chat';
 }
 
-export interface HomeServiceItem {
+export interface ReasonItem {
   title: string;
   description: string;
-  iconSrc: string;
+}
+
+export interface ServiceFeature {
+  title: string;
+  description: string;
+  icon: 'plan' | 'brand' | 'star' | 'content' | 'chart';
+}
+
+export interface HomeNavItem {
+  label: string;
   href: string;
 }
 
-export interface ProcessStep {
-  step: number;
-  title: string;
-  description: string;
-  iconSrc: string;
+export interface HomeHeroCheck {
+  label: string;
 }
 
-export interface PartnershipStat {
+export interface HomeComparisonItem {
+  text: string;
+}
+
+export interface HomeServiceItem {
+  iconSrc: string;
+  tag: string;
+  title: string;
+  description: string;
+  href?: string;
+}
+
+export interface HomeDifferentiatorItem {
+  number: string;
+  badge: string;
+  title: string;
+  description: string;
+}
+
+export interface HomePortfolioItem {
+  imageSrc: string;
+  category: string;
+  title: string;
+  result: string;
+}
+
+export interface HomeStatItem {
   value: string;
   label: string;
-  color: 'teal' | 'blue' | 'purple';
 }
 
-export interface CoreValueItem {
-  icon: string;
+export interface HomeTestimonialItem {
+  quote: string;
+  author: string;
+}
+
+export interface HomeFooterLinkGroup {
   title: string;
-  description: string;
-  gradient: 'teal' | 'blue' | 'purple';
+  links: string[];
+}
+
+export interface HomeContactFormField {
+  label: string;
+  placeholder: string;
+  type: 'text' | 'tel' | 'select';
+  options?: string[];
 }
 
 export interface HomeContent {
-  brandName: string;
-  consultationUrl: string;
-  navigation: NavigationItem[];
+  navbar: {
+    logoSrc: string;
+    navItems: HomeNavItem[];
+    ctaLabel: string;
+    ctaHref: string;
+  };
   hero: {
-    subtitle: string;
+    badge: string;
+    titleLine1: string;
     titleHighlight: string;
-    titleSuffix: string;
-    titleGradient: string;
-    videoSrc: string;
-    posterSrc: string;
-    cta: CtaLink;
+    titleLine2: string;
+    description: string;
+    primaryCta: string;
+    secondaryCta: string;
+    checks: HomeHeroCheck[];
+    imageSrc: string;
+  };
+  painSolution: {
+    badge: string;
+    title: string;
+    description: string;
+    beforeTitle: string;
+    beforeItems: HomeComparisonItem[];
+    afterTitle: string;
+    afterItems: HomeComparisonItem[];
   };
   services: {
     badge: string;
@@ -58,28 +111,42 @@ export interface HomeContent {
     description: string;
     items: HomeServiceItem[];
   };
-  process: {
+  differentiators: {
     badge: string;
     title: string;
-    description: string;
-    items: ProcessStep[];
+    items: HomeDifferentiatorItem[];
   };
-  partnership: {
-    title: string;
-    titleHighlight: string;
-    description: string;
-    stats: PartnershipStat[];
-  };
-  coreValues: {
+  portfolio: {
     badge: string;
     title: string;
-    description: string;
-    items: CoreValueItem[];
+    ctaLabel: string;
+    items: HomePortfolioItem[];
   };
-  cta: {
-    title: string;
+  socialProof: {
+    stats: HomeStatItem[];
+    testimonialsTitle: string;
+    testimonials: HomeTestimonialItem[];
+  };
+  contact: {
+    badge: string;
+    titleLine1: string;
+    titlePrefix: string;
     titleHighlight: string;
+    titleLine2: string;
     description: string;
-    button: CtaLink;
+    phone: string;
+    email: string;
+    formTitle: string;
+    formFields: HomeContactFormField[];
+    submitLabel: string;
+    disclaimer: string;
+  };
+  footer: {
+    logoSrc: string;
+    description: string;
+    linkGroups: HomeFooterLinkGroup[];
+    companyInfo: string;
+    copyright: string;
+    legalLinks: string[];
   };
 }

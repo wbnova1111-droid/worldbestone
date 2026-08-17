@@ -16,6 +16,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'WORLD BEST | 병원 마케팅 파트너',
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Outfit:wght@800&display=swap',
+        },
+      ],
       meta: [
         {
           name: 'description',
