@@ -5,63 +5,79 @@ defineProps<{
   navbar: HomeContent['navbar'];
 }>();
 
+const route = useRoute();
 const isMenuOpen = ref(false);
+
+const goHome = async () => {
+  if (route.path !== '/') {
+    await navigateTo('/');
+  }
+  isMenuOpen.value = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-[#e2e8f0] bg-white/98 backdrop-blur-sm">
-    <div class="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 md:h-[90px] md:px-8 lg:px-[120px]">
-      <NuxtLink to="/" class="flex items-center gap-3">
-        <img :src="navbar.logoSrc" alt="WORLDBEST" class="h-[36px] w-[48px] rounded object-cover md:h-[42px] md:w-[56px]">
-        <div class="flex flex-col leading-none">
-          <span class="font-display text-lg font-extrabold tracking-[0.5px] text-wb-dark md:text-xl">WORLDBEST</span>
-          <span class="text-[10px] font-extrabold tracking-[2px] text-wb-primary md:text-[11px]">MARKETING</span>
-        </div>
-      </NuxtLink>
-
-      <nav class="hidden items-center gap-10 text-[15px] font-bold text-[#1e293b] xl:flex">
-        <NuxtLink
-          v-for="item in navbar.navItems"
-          :key="item.label"
-          :to="item.href"
-          class="transition-colors hover:text-wb-primary"
+  <header class="sticky top-0 z-50 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.19)]">
+    <div class="mx-auto flex h-[72px] max-w-[1920px] items-center justify-between px-4 md:px-6 lg:h-[116px] lg:px-[34px]">
+      <a
+        href="/"
+        class="flex min-w-0 items-center"
+        aria-label="홈 맨 위로 이동"
+        @click.prevent="goHome"
+      >
+        <img
+          :src="navbar.logoSrc"
+          alt=""
+          class="h-12 w-[81px] shrink-0 object-contain object-left lg:h-[96px] lg:w-[162px]"
         >
-          {{ item.label }}
-        </NuxtLink>
-      </nav>
+        <span class="truncate font-display text-[22px] font-extrabold uppercase leading-[1.1] text-black md:text-[32px] lg:text-[50px] lg:leading-[56px]">
+          {{ navbar.wordmark }}
+        </span>
+      </a>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-4 lg:gap-[84px]">
+        <nav class="hidden items-center gap-[60px] font-display text-[24px] font-normal text-black lg:flex">
+          <NuxtLink
+            v-for="item in navbar.navItems"
+            :key="item.label"
+            :to="item.href"
+            class="px-2.5 py-2.5 leading-[56px] transition-opacity hover:opacity-70"
+          >
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
         <NuxtLink
           :to="navbar.ctaHref"
-          class="hidden rounded-lg bg-wb-primary px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90 sm:inline-flex md:px-7 md:py-3.5 md:text-base"
+          class="hidden rounded-[10px] bg-wb-primary px-10 py-1.5 font-display text-[24px] font-medium leading-[56px] text-white lg:inline-flex"
         >
           {{ navbar.ctaLabel }}
         </NuxtLink>
         <button
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#e2e8f0] xl:hidden"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5e8eb] lg:hidden"
           aria-label="메뉴 열기"
           @click="isMenuOpen = !isMenuOpen"
         >
-          <span class="block h-0.5 w-5 bg-wb-dark" />
+          <span class="block h-0.5 w-5 bg-black" />
         </button>
       </div>
     </div>
 
-    <div v-if="isMenuOpen" class="border-t border-[#e2e8f0] bg-white px-5 py-4 xl:hidden">
+    <div v-if="isMenuOpen" class="border-t border-[#e5e8eb] bg-white px-5 py-4 lg:hidden">
       <nav class="flex flex-col gap-3">
         <NuxtLink
           v-for="item in navbar.navItems"
           :key="item.label"
           :to="item.href"
-          class="py-2 text-[15px] font-bold text-[#1e293b]"
+          class="py-2 text-[15px] font-semibold"
           @click="isMenuOpen = false"
         >
           {{ item.label }}
         </NuxtLink>
         <NuxtLink
           :to="navbar.ctaHref"
-          class="mt-2 inline-flex justify-center rounded-lg bg-wb-primary px-5 py-3 text-sm font-bold text-white"
+          class="inline-flex justify-center rounded-[10px] bg-wb-primary px-5 py-3 text-sm font-medium text-white"
           @click="isMenuOpen = false"
         >
           {{ navbar.ctaLabel }}

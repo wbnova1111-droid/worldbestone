@@ -1,152 +1,115 @@
-export interface CtaLink {
-  label: string;
-  href: string;
-  external?: boolean;
-}
-
-export interface NavigationItem {
-  label: string;
-  href: string;
-  icon: 'home' | 'services' | 'company' | 'chat';
-}
-
-export interface ReasonItem {
-  title: string;
-  description: string;
-}
-
-export interface ServiceFeature {
-  title: string;
-  description: string;
-  icon: 'plan' | 'brand' | 'star' | 'content' | 'chart';
-}
-
 export interface HomeNavItem {
   label: string;
   href: string;
 }
 
-export interface HomeHeroCheck {
-  label: string;
+export interface HomeMarqueeItem {
+  lines: string[];
+  icons: string[];
+  iconContain?: boolean;
 }
 
-export interface HomeComparisonItem {
-  text: string;
+export interface HomeAboutCard {
+  title: string;
+  lines: string[];
+  emphasis?: string[];
+  tone: 'black' | 'teal';
 }
 
-export interface HomeServiceItem {
+export interface HomePainPoint {
+  title: string;
+  description: string;
   iconSrc: string;
-  tag: string;
-  title: string;
-  description: string;
-  href?: string;
 }
 
-export interface HomeDifferentiatorItem {
+export interface HomeProcessStep {
   number: string;
-  badge: string;
-  title: string;
-  description: string;
-}
-
-export interface HomePortfolioItem {
+  ko: string;
+  en: string;
+  summary: string;
+  detail: string;
   imageSrc: string;
-  category: string;
-  title: string;
-  result: string;
 }
 
-export interface HomeStatItem {
-  value: string;
-  label: string;
+export interface HomeFaqItem {
+  question: string;
+  answer: string;
 }
 
-export interface HomeTestimonialItem {
-  quote: string;
-  author: string;
-}
-
-export interface HomeFooterLinkGroup {
-  title: string;
-  links: string[];
-}
-
-export interface HomeContactFormField {
+export interface HomeContactField {
   label: string;
   placeholder: string;
   type: 'text' | 'tel' | 'select';
+  required?: boolean;
+  optionalHint?: string;
   options?: string[];
 }
 
 export interface HomeContent {
   navbar: {
     logoSrc: string;
+    wordmark: string;
     navItems: HomeNavItem[];
     ctaLabel: string;
     ctaHref: string;
   };
   hero: {
-    badge: string;
-    titleLine1: string;
-    titleHighlight: string;
-    titleLine2: string;
-    description: string;
-    primaryCta: string;
-    secondaryCta: string;
-    checks: HomeHeroCheck[];
-    imageSrc: string;
+    brandLines: string[];
+    animationLines: string[];
+    animationEmphasis: string;
+    servicesHeading: string;
   };
-  painSolution: {
-    badge: string;
+  marquee: HomeMarqueeItem[];
+  about: HomeAboutCard[];
+  pain: {
+    titleLines: string[];
+    body: string;
+    partnerPrefix: string;
+    partnerEmphasis: string;
+    partnerSuffix: string;
+    points: HomePainPoint[];
+  };
+  process: {
     title: string;
-    description: string;
-    beforeTitle: string;
-    beforeItems: HomeComparisonItem[];
-    afterTitle: string;
-    afterItems: HomeComparisonItem[];
-  };
-  services: {
-    badge: string;
-    title: string;
-    description: string;
-    items: HomeServiceItem[];
-  };
-  differentiators: {
-    badge: string;
-    title: string;
-    items: HomeDifferentiatorItem[];
-  };
-  portfolio: {
-    badge: string;
-    title: string;
-    ctaLabel: string;
-    items: HomePortfolioItem[];
-  };
-  socialProof: {
-    stats: HomeStatItem[];
-    testimonialsTitle: string;
-    testimonials: HomeTestimonialItem[];
+    subtitle: string;
+    steps: HomeProcessStep[];
   };
   contact: {
-    badge: string;
-    titleLine1: string;
-    titlePrefix: string;
-    titleHighlight: string;
-    titleLine2: string;
+    title: string;
     description: string;
-    phone: string;
-    email: string;
+    logoSrc?: string;
     formTitle: string;
-    formFields: HomeContactFormField[];
+    formSubtitle: string;
+    hospitalName: HomeContactField;
+    name: HomeContactField;
+    phone: HomeContactField;
+    servicesLabel?: string;
+    services?: string[];
+    source: HomeContactField;
     submitLabel: string;
-    disclaimer: string;
+  };
+  faq: {
+    titleLines: string[];
+    prompt: string;
+    email?: string;
+    items: HomeFaqItem[];
+  };
+  ctaBanner: {
+    titleLines: string[];
+    buttonLabel: string;
+    href: string;
+  };
+  floatDock: {
+    items: { label: string; href: string; iconSrc: string; external?: boolean }[];
   };
   footer: {
     logoSrc: string;
-    description: string;
-    linkGroups: HomeFooterLinkGroup[];
-    companyInfo: string;
-    copyright: string;
-    legalLinks: string[];
+    brandName: string;
+    brandSub: string;
+    slogan: string;
+    companyLines: string[];
+    introTitle?: string;
+    introLinks?: HomeNavItem[];
+    socialTitle?: string;
   };
 }

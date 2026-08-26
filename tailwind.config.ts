@@ -20,11 +20,12 @@ export default {
           900: '#134e4a',
         },
         wb: {
-          primary: '#5bafa6',
+          primary: '#09bea3',
           dark: '#1f4541',
-          footer: '#14322f',
+          footer: '#1c1d1d',
           mint: '#f0f7f6',
-          slate: '#64748b',
+          slate: '#767676',
+          ink: '#111111',
         },
         ink: '#111827',
       },
@@ -32,8 +33,17 @@ export default {
         soft: '0 16px 40px rgba(15, 23, 42, 0.12)',
       },
       fontFamily: {
-        sans: ['Manrope', 'Pretendard', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Outfit', 'Manrope', 'Pretendard', 'sans-serif'],
+        sans: ['Pretendard', 'Manrope', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Paperlogy', 'Pretendard', 'sans-serif'],
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 28s linear infinite',
       },
     },
   },

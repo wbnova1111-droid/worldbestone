@@ -5,71 +5,122 @@ const props = defineProps<{
   section: HomeContent['contact'];
 }>();
 
-const form = reactive<Record<string, string>>({});
+const source = ref('');
+const logoVisible = ref(false);
+const logoRef = ref<HTMLElement | null>(null);
 
-props.section.formFields.forEach((field) => {
-  form[field.label] = '';
+onMounted(() => {
+  if (!props.section.logoSrc || !logoRef.value) return;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) logoVisible.value = true;
+    },
+    { threshold: 0.2 },
+  );
+  observer.observe(logoRef.value);
+  onUnmounted(() => observer.disconnect());
 });
 
-function handleSubmit() {
-  // TODO: API 연동
-}
+const onSubmit = (event: Event) => {
+  event.preventDefault();
+};
 </script>
 
 <template>
-  <section class="bg-wb-dark">
-    <div class="mx-auto flex max-w-[1440px] flex-col gap-12 px-5 py-16 md:gap-16 md:px-8 md:py-24 lg:flex-row lg:items-center lg:gap-20 lg:px-[120px] lg:py-[120px]">
-      <div class="flex-1 space-y-8 text-white">
-        <p class="text-sm font-extrabold tracking-[1px] text-wb-primary">{{ section.badge }}</p>
-        <h2 class="font-display text-3xl font-extrabold leading-tight md:text-[44px]">
-          {{ section.titleLine1 }}<br>
-          {{ section.titlePrefix }}<span class="text-wb-primary">{{ section.titleHighlight }}</span>{{ section.titleLine2 }}
-        </h2>
-        <p class="max-w-xl text-base leading-relaxed text-wb-mint/80">{{ section.description }}</p>
-        <div class="space-y-4 pt-2">
-          <div class="flex items-center gap-3">
-            <img src="/images/home-new/phone.svg" alt="" class="size-6">
-            <a :href="`tel:${section.phone}`" class="font-display text-xl font-extrabold md:text-[22px]">{{ section.phone }}</a>
-          </div>
-          <div class="flex items-center gap-3">
-            <img src="/images/home-new/mail.svg" alt="" class="size-6">
-            <a :href="`mailto:${section.email}`" class="text-base">{{ section.email }}</a>
-          </div>
+  <section id="contact" class="scroll-mt-[72px] bg-white lg:scroll-mt-[116px]">
+    <div class="mx-auto flex max-w-[1920px] flex-col items-start gap-12 px-6 py-16 lg:flex-row lg:justify-center lg:gap-[80px] lg:px-[160px] lg:py-[150px] xl:gap-[133px]">
+      <div class="flex w-full max-w-[710px] shrink-0 flex-col gap-10 lg:gap-[80px] xl:gap-[123px]">
+        <div class="max-w-[658px]">
+          <h2 class="text-[32px] font-bold tracking-[-1px] text-black md:text-[40px]">{{ section.title }}</h2>
+          <p class="mt-2 whitespace-pre-line text-[18px] font-medium leading-[1.4] tracking-[-0.6px] text-wb-slate md:text-[24px]">
+            {{ section.description }}
+          </p>
+        </div>
+        <div
+          v-if="section.logoSrc"
+          ref="logoRef"
+          class="hidden w-full max-w-[710px] overflow-hidden lg:block"
+        >
+          <img
+            :src="section.logoSrc"
+            alt=""
+            class="h-auto w-full origin-left object-contain object-left transition-[opacity,transform] duration-[1080ms] ease-out"
+            :class="logoVisible ? 'translate-x-0 opacity-100' : '-translate-x-[404px] opacity-0'"
+          >
         </div>
       </div>
 
       <form
-        class="w-full shrink-0 rounded-3xl bg-white p-6 md:p-10 lg:w-[560px]"
-        @submit.prevent="handleSubmit"
+        class="w-full max-w-[757px] rounded-[24px] border border-[#e5e8eb] bg-white p-7 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)]"
+        @submit="onSubmit"
       >
-        <h3 class="font-display text-2xl font-extrabold text-wb-dark">{{ section.formTitle }}</h3>
-        <div class="mt-6 space-y-4">
-          <div v-for="field in section.formFields" :key="field.label">
-            <label class="mb-2 block text-sm font-bold text-[#1e293b]">{{ field.label }}</label>
-            <select
-              v-if="field.type === 'select'"
-              v-model="form[field.label]"
-              class="w-full rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-3.5 py-3.5 text-[15px] text-wb-slate outline-none focus:border-wb-primary"
+        <p class="text-[22px] font-bold tracking-[-0.55px] text-black">{{ section.formTitle }}</p>
+        <p class="mt-1 text-[14px] font-medium tracking-[-0.35px] text-wb-slate">{{ section.formSubtitle }}</p>
+
+        <label class="mt-8 block text-[14px] font-semibold text-[#363636]">
+          {{ section.hospitalName.label }} <span class="text-[#fb2c36]">*</span>
+        </label>
+        <input
+          type="text"
+          :placeholder="section.hospitalName.placeholder"
+          class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3 text-[14px] outline-none placeholder:text-[#363636]/40"
+          required
+        >
+
+        <label class="mt-6 block text-[14px] font-semibold text-[#363636]">
+          {{ section.name.label }} <span class="text-[#fb2c36]">*</span>
+        </label>
+        <input
+          type="text"
+          :placeholder="section.name.placeholder"
+          class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3.5 text-[14px] outline-none placeholder:text-[#363636]/40"
+          required
+        >
+
+        <label class="mt-6 block text-[14px] font-semibold text-[#363636]">
+          {{ section.phone.label }} <span class="text-[#fb2c36]">*</span>
+        </label>
+        <input
+          type="tel"
+          :placeholder="section.phone.placeholder"
+          class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3.5 text-[14px] outline-none placeholder:text-[#363636]/40"
+          required
+        >
+
+        <template v-if="section.services?.length">
+          <p class="mt-6 text-[14px] font-semibold text-[#363636]">
+            {{ section.servicesLabel }} <span class="text-[#fb2c36]">*</span>
+          </p>
+          <div class="mt-2.5 flex flex-col gap-2.5">
+            <label
+              v-for="service in section.services"
+              :key="service"
+              class="flex items-center gap-3 rounded-xl border border-[#e5e8eb] px-4 py-3"
             >
-              <option value="">{{ field.placeholder }}</option>
-              <option v-for="option in field.options" :key="option" :value="option">{{ option }}</option>
-            </select>
-            <input
-              v-else
-              v-model="form[field.label]"
-              :type="field.type"
-              :placeholder="field.placeholder"
-              class="w-full rounded-lg border border-[#e2e8f0] bg-[#f8fafc] px-3.5 py-3.5 text-[15px] text-wb-slate outline-none focus:border-wb-primary"
-            >
+              <input type="checkbox" :value="service" class="size-5 rounded border-2 border-[#d1d6db]">
+              <span class="text-[14px] text-[#363636]">{{ service }}</span>
+            </label>
           </div>
-        </div>
+        </template>
+
+        <label class="mt-6 block text-[14px] font-semibold text-[#363636]">
+          {{ section.source.label }}
+          <span class="font-semibold text-[#9ca3af]"> {{ section.source.optionalHint }}</span>
+        </label>
+        <select
+          v-model="source"
+          class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3 text-[14px] text-[#363636] outline-none"
+        >
+          <option value="" disabled>{{ section.source.placeholder }}</option>
+          <option v-for="option in section.source.options" :key="option" :value="option">{{ option }}</option>
+        </select>
+
         <button
           type="submit"
-          class="mt-6 w-full rounded-lg bg-wb-primary px-7 py-3.5 text-base font-bold text-white transition-opacity hover:opacity-90"
+          class="mt-8 w-full rounded-full bg-wb-primary py-4 text-[18px] font-semibold leading-[18px] text-white"
         >
           {{ section.submitLabel }}
         </button>
-        <p class="mt-4 text-center text-xs text-wb-slate">{{ section.disclaimer }}</p>
       </form>
     </div>
   </section>

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import type { HomeContent } from '~/types/home';
-
 defineProps<{
-  section: HomeContent['portfolio'];
+  section: Record<string, unknown>;
 }>();
 </script>
 

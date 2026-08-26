@@ -2,62 +2,42 @@
 import type { HomeContent } from '~/types/home';
 
 defineProps<{
-  section: HomeContent['painSolution'];
+  section: HomeContent['pain'];
 }>();
 </script>
 
 <template>
-  <section class="bg-[#f8fafc]">
-    <div class="mx-auto flex max-w-[1440px] flex-col gap-10 px-5 py-16 md:gap-16 md:px-8 md:py-24 lg:px-[120px] lg:py-[100px]">
-      <div class="mx-auto w-full text-center">
-        <p class="text-sm font-extrabold tracking-[1.5px] text-wb-primary">{{ section.badge }}</p>
-        <h2 class="mt-4 font-display text-2xl font-extrabold leading-tight tracking-tight text-wb-dark md:whitespace-nowrap md:text-[clamp(22px,2.7vw,38px)]">
-          {{ section.title }}
+  <section class="bg-white">
+    <div class="mx-auto flex max-w-[1920px] flex-col items-center gap-12 px-6 py-16 md:px-16 lg:flex-row lg:items-center lg:justify-center lg:gap-[120px] lg:px-[160px] xl:gap-[180px] xl:px-[250px] lg:py-[120px]">
+      <div class="w-full max-w-[659px]">
+        <h2 class="text-[32px] font-bold leading-[1.4] tracking-[-1px] text-black md:text-[40px]">
+          <span class="block">{{ section.titleLines[0] }}</span>
+          <span class="block">{{ section.titleLines[1] }}</span>
         </h2>
-        <p class="mx-auto mt-4 max-w-3xl text-base text-wb-slate">{{ section.description }}</p>
+        <p class="mt-10 whitespace-pre-line text-[18px] font-medium leading-[1.4] tracking-[-0.5px] text-wb-slate md:mt-10 md:text-[20px]">
+          {{ section.body }}
+        </p>
+        <p class="mt-[60px] text-[18px] font-medium leading-[1.4] tracking-[-0.5px] text-wb-slate md:text-[20px]">
+          {{ section.partnerPrefix }}<br>
+          <span class="font-semibold text-[#111]">{{ section.partnerEmphasis }}</span>{{ section.partnerSuffix }}
+        </p>
       </div>
 
-      <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
-        <div class="rounded-[20px] border border-[#e2e8f0] bg-white p-6 md:p-10">
-          <div class="flex items-center gap-2.5">
-            <div class="rounded-md bg-red-500/10 p-1.5">
-              <img src="/images/home-new/x-circle.svg" alt="" class="size-[18px]">
-            </div>
-            <h3 class="text-base font-extrabold text-red-500 md:text-lg">{{ section.beforeTitle }}</h3>
+      <ul class="flex w-full max-w-[452px] flex-col gap-3">
+        <li
+          v-for="point in section.points"
+          :key="point.title"
+          class="flex h-auto min-h-[140px] items-start gap-8 rounded-2xl bg-white/20 px-9 py-10 shadow-[10px_10px_30px_rgba(0,0,0,0.06)]"
+        >
+          <div class="size-[60px] shrink-0 overflow-hidden rounded-full bg-[#f5fdff]">
+            <img :src="point.iconSrc" alt="" class="size-full object-cover">
           </div>
-          <hr class="my-6 border-[#e2e8f0]">
-          <ul class="space-y-4">
-            <li
-              v-for="item in section.beforeItems"
-              :key="item.text"
-              class="flex gap-3 text-[15px] leading-relaxed text-wb-slate"
-            >
-              <span class="font-bold text-black">•</span>
-              <span>{{ item.text }}</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="rounded-[20px] bg-wb-primary p-6 md:p-10">
-          <div class="flex items-center gap-2.5">
-            <div class="rounded-md bg-white p-1.5">
-              <img src="/images/home-new/check.svg" alt="" class="size-[18px]">
-            </div>
-            <h3 class="text-base font-extrabold text-white md:text-lg">{{ section.afterTitle }}</h3>
+          <div class="min-w-0">
+            <p class="text-[20px] font-semibold tracking-[-0.5px] text-black">{{ point.title }}</p>
+            <p class="mt-2 text-[16px] font-semibold leading-[1.4] tracking-[-0.4px] text-wb-slate">{{ point.description }}</p>
           </div>
-          <hr class="my-6 border-white/20">
-          <ul class="space-y-4">
-            <li
-              v-for="item in section.afterItems"
-              :key="item.text"
-              class="flex gap-3 text-[15px] leading-relaxed text-white"
-            >
-              <span class="font-bold text-wb-mint">✓</span>
-              <span>{{ item.text }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>

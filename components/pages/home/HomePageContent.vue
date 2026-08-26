@@ -7,15 +7,15 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-white">
+  <div id="home-top" class="bg-white">
     <HomeNavbar :navbar="content.navbar" />
-    <HomeHero :hero="content.hero" />
-    <HomePainSolution :section="content.painSolution" />
-    <HomeServices :section="content.services" />
-    <HomeDifferentiators :section="content.differentiators" />
-    <HomePortfolio id="portfolio" :section="content.portfolio" />
-    <HomeSocialProof :section="content.socialProof" />
-    <HomeContact id="contact" :section="content.contact" />
+    <HomeHero :hero="content.hero" :marquee="content.marquee" />
+    <HomeAbout :cards="content.about" />
+    <HomeProcess :section="content.process" />
+    <HomeFaq :section="content.faq" />
+    <HomeContact :section="content.contact" />
+    <HomeCtaBanner :section="content.ctaBanner" />
     <HomeFooter :footer="content.footer" />
+    <HomeFloatDock :items="content.floatDock.items" />
   </div>
 </template>
