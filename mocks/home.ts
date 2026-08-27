@@ -4,8 +4,9 @@ const asset = (name: string) => `/images/home-figma/${name}`;
 
 export const homeMock: HomeContent = {
   navbar: {
-    logoSrc: asset('logo-wb.svg'),
+    logoSrc: asset('header-mark.svg'),
     wordmark: 'WORLD BEST',
+    tagline: '병의원 올인원 마케팅',
     navItems: [
       { label: '회사 소개', href: '/company' },
       { label: '마케팅 서비스', href: '/products' },
@@ -187,7 +188,7 @@ export const homeMock: HomeContent = {
     items: [
       {
         label: '24시간 전화 상담',
-        href: 'tel:010-4492-3616',
+        href: 'tel:010-4492-3816',
         iconSrc: asset('float/phone.png'),
       },
       {
@@ -198,7 +199,7 @@ export const homeMock: HomeContent = {
       },
       {
         label: '인스타그램',
-        href: 'https://www.instagram.com/',
+        href: 'https://www.instagram.com/worldbest_marketingagency/',
         iconSrc: asset('float/instagram.png'),
         external: true,
       },

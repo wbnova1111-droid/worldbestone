@@ -26,7 +26,7 @@ const emphasize = (line: string, words: string[] = []) => {
     <article
       v-for="(card, index) in cards"
       :key="`${index}-${card.title}`"
-      class="flex items-center justify-center p-4 md:p-6 lg:sticky lg:top-[116px] lg:h-[calc(100dvh-116px)]"
+      class="flex items-center justify-center p-4 md:p-6 lg:sticky lg:top-[108px] lg:h-[calc(100dvh-108px)]"
       :style="{ zIndex: index + 1 }"
     >
       <div

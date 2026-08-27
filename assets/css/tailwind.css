@@ -47,6 +47,13 @@
   button {
     -webkit-tap-highlight-color: transparent;
   }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+  }
 }
 
 @layer components {

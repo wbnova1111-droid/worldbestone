@@ -16,7 +16,7 @@ export const siteMock: SiteContent = {
     tagline: '병원 성장을 함께 만드는\n올인원 마케팅 파트너',
     quickLinks: [
       { label: '회사 소개', href: '/company' },
-      { label: '병원 마케팅', href: '/hospital-marketing' },
+      { label: '마케팅 서비스', href: '/products' },
       { label: '무료 상담하기', href: consultationUrl, external: true },
     ],
     contact: {
@@ -28,18 +28,10 @@ export const siteMock: SiteContent = {
   },
   headerNav: [
     { label: '회사 소개', href: '/company' },
-    { label: '병원 마케팅', href: '/hospital-marketing' },
+    { label: '마케팅 서비스', href: '/products' },
   ],
   serviceNav: [
-    { slug: 'allinone', label: '파트너십 올인원 서비스', href: '/products/allinone' },
-    { slug: 'place', label: '플레이스 상위노출', href: '/products/place' },
-    { slug: 'blog', label: '블로그 상위노출', href: '/products/blog' },
-    { slug: 'youtube', label: '유튜브 기획 및 촬영 편집', href: '/products/youtube' },
-    { slug: 'medical-platform', label: '메디컬 플랫폼', href: '/products/medical-platform' },
-    { slug: 'offline', label: '오프라인 광고', href: '/products/offline' },
-    { slug: 'sns', label: 'SNS 채널 운영', href: '/products/sns' },
-    { slug: 'ai-strategy', label: 'AI 분석 · 노출 전략', href: '/products/ai-strategy' },
-    { slug: 'website', label: '홈페이지 제작 및 관리', href: '/products/website' },
+    { slug: 'products', label: '마케팅 서비스', href: '/products' },
   ],
   bottomNav: [
     { label: '홈', href: '/', icon: 'home' },

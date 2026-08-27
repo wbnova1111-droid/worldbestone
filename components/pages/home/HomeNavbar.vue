@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import type { HomeContent } from '~/types/home';
 
-defineProps<{
+const props = defineProps<{
   navbar: HomeContent['navbar'];
 }>();
 
 const route = useRoute();
 const isMenuOpen = ref(false);
+
+const ctaTo = computed(() => {
+  if (props.navbar.ctaHref.startsWith('#')) {
+    return route.path === '/' ? props.navbar.ctaHref : `/${props.navbar.ctaHref}`;
+  }
+  return props.navbar.ctaHref;
+});
 
 const goHome = async () => {
   if (route.path !== '/') {
@@ -18,21 +25,27 @@ const goHome = async () => {
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 bg-white shadow-[0_2px_10px_rgba(0,0,0,0.19)]">
-    <div class="mx-auto flex h-[72px] max-w-[1920px] items-center justify-between px-4 md:px-6 lg:h-[116px] lg:px-[34px]">
+  <header class="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-[12.5px]">
+    <div class="mx-auto flex h-[72px] max-w-[1920px] items-center justify-between px-4 py-3 md:px-8 lg:h-[108px] lg:px-[80px] lg:py-4 xl:px-[160px]">
       <a
         href="/"
-        class="flex min-w-0 items-center"
+        class="flex min-w-0 items-center gap-3 lg:gap-4"
         aria-label="홈 맨 위로 이동"
         @click.prevent="goHome"
       >
         <img
           :src="navbar.logoSrc"
           alt=""
-          class="h-12 w-[81px] shrink-0 object-contain object-left lg:h-[96px] lg:w-[162px]"
+          class="h-9 w-[46px] shrink-0 object-contain object-left lg:h-[54px] lg:w-[69px]"
         >
-        <span class="truncate font-display text-[22px] font-extrabold uppercase leading-[1.1] text-black md:text-[32px] lg:text-[50px] lg:leading-[56px]">
-          {{ navbar.wordmark }}
+        <span class="flex min-w-0 items-center gap-2">
+          <span class="shrink-0 font-display text-[15px] font-extrabold leading-none tracking-tight lg:text-[17.619px]">
+            <span class="text-wb-primary">W</span><span class="text-[12px] text-white lg:text-[14.095px]">ORLD</span>
+            <span class="text-wb-primary">&nbsp;B</span><span class="text-[12px] text-white lg:text-[14.095px]">EST</span>
+          </span>
+          <span class="hidden shrink-0 font-display text-[12px] font-medium leading-none text-white sm:inline">
+            {{ navbar.tagline }}
+          </span>
         </span>
       </a>
 
@@ -48,7 +61,7 @@ const goHome = async () => {
           </NuxtLink>
         </nav>
         <NuxtLink
-          :to="navbar.ctaHref"
+          :to="ctaTo"
           class="hidden rounded-[10px] bg-wb-primary px-10 py-1.5 font-display text-[24px] font-medium leading-[56px] text-white lg:inline-flex"
         >
           {{ navbar.ctaLabel }}
@@ -76,7 +89,7 @@ const goHome = async () => {
           {{ item.label }}
         </NuxtLink>
         <NuxtLink
-          :to="navbar.ctaHref"
+          :to="ctaTo"
           class="inline-flex justify-center rounded-[10px] bg-wb-primary px-5 py-3 text-sm font-medium text-white"
           @click="isMenuOpen = false"
         >

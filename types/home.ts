@@ -3,6 +3,17 @@ export interface HomeNavItem {
   href: string;
 }
 
+export interface CtaLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+export interface ReasonItem {
+  title: string;
+  description: string;
+}
+
 export interface HomeMarqueeItem {
   lines: string[];
   icons: string[];
@@ -49,6 +60,7 @@ export interface HomeContent {
   navbar: {
     logoSrc: string;
     wordmark: string;
+    tagline: string;
     navItems: HomeNavItem[];
     ctaLabel: string;
     ctaHref: string;
