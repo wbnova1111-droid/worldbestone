@@ -3,12 +3,32 @@ definePageMeta({ layout: 'home' });
 
 const { content } = useHomeContent();
 
-useSeoMeta({
-  title: 'WORLD BEST | 병원 마케팅 파트너',
-  ogTitle: 'WORLD BEST | 병원 마케팅 파트너',
+useSiteSeo({
+  title: '병원 마케팅 파트너 월드베스트 | WORLD BEST',
   description:
-    '클라이언트가 아닌 파트너로, 병의원 전문 올인원 마케팅. 기획부터 디자인, 촬영, 영상, 콘텐츠, 웹개발까지 한 곳에서 밀착 관리합니다.',
-  ogDescription: '병의원 전문 올인원 마케팅 파트너 WORLD BEST',
+    '병원 마케팅 파트너 월드베스트. 병·의원 전문 올인원 마케팅으로 기획·콘텐츠·디자인·광고·홈페이지·GEO·AEO까지 한 곳에서 밀착 관리합니다.',
+  path: '/',
+  jsonLd: [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: '월드베스트 WORLD BEST',
+      alternateName: '병원 마케팅 파트너 월드베스트',
+      description: '병·의원 전문 올인원 마케팅 파트너',
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: content.value.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ],
 });
 </script>
 

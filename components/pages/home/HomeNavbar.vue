@@ -8,6 +8,22 @@ const props = defineProps<{
 const route = useRoute();
 const isMenuOpen = ref(false);
 
+watch(
+  () => route.fullPath,
+  () => {
+    isMenuOpen.value = false;
+  },
+);
+
+watch(isMenuOpen, (open) => {
+  if (typeof document === 'undefined') return;
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = '';
+});
+
 const ctaTo = computed(() => {
   if (props.navbar.ctaHref.startsWith('#')) {
     return route.path === '/' ? props.navbar.ctaHref : `/${props.navbar.ctaHref}`;
@@ -40,10 +56,10 @@ const goHome = async () => {
         >
         <span class="flex min-w-0 items-center gap-2">
           <span class="shrink-0 font-display text-[15px] font-extrabold leading-none tracking-tight lg:text-[17.619px]">
-            <span class="text-wb-primary">W</span><span class="text-[12px] text-white lg:text-[14.095px]">ORLD</span>
-            <span class="text-wb-primary">&nbsp;B</span><span class="text-[12px] text-white lg:text-[14.095px]">EST</span>
+            <span class="text-wb-primary">W</span><span class="text-[12px] text-[#111] lg:text-[14.095px]">ORLD</span>
+            <span class="text-wb-primary">&nbsp;B</span><span class="text-[12px] text-[#111] lg:text-[14.095px]">EST</span>
           </span>
-          <span class="hidden shrink-0 font-display text-[12px] font-medium leading-none text-white sm:inline">
+          <span class="hidden shrink-0 font-display text-[12px] font-medium leading-none text-[#111]/70 sm:inline">
             {{ navbar.tagline }}
           </span>
         </span>
@@ -68,33 +84,50 @@ const goHome = async () => {
         </NuxtLink>
         <button
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#e5e8eb] lg:hidden"
-          aria-label="메뉴 열기"
+          class="relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#e5e8eb] lg:hidden"
+          :aria-label="isMenuOpen ? '메뉴 닫기' : '메뉴 열기'"
+          :aria-expanded="isMenuOpen"
           @click="isMenuOpen = !isMenuOpen"
         >
-          <span class="block h-0.5 w-5 bg-black" />
+          <span
+            class="absolute left-1/2 top-[12px] h-0.5 w-5 -translate-x-1/2 bg-black transition-transform duration-300"
+            :class="isMenuOpen ? 'translate-y-[7px] rotate-45' : ''"
+          />
+          <span
+            class="absolute left-1/2 top-[19px] h-0.5 w-5 -translate-x-1/2 bg-black transition-opacity duration-200"
+            :class="isMenuOpen ? 'opacity-0' : 'opacity-100'"
+          />
+          <span
+            class="absolute left-1/2 top-[26px] h-0.5 w-5 -translate-x-1/2 bg-black transition-transform duration-300"
+            :class="isMenuOpen ? '-translate-y-[7px] -rotate-45' : ''"
+          />
         </button>
       </div>
     </div>
 
-    <div v-if="isMenuOpen" class="border-t border-[#e5e8eb] bg-white px-5 py-4 lg:hidden">
-      <nav class="flex flex-col gap-3">
-        <NuxtLink
-          v-for="item in navbar.navItems"
-          :key="item.label"
-          :to="item.href"
-          class="py-2 text-[15px] font-semibold"
-          @click="isMenuOpen = false"
-        >
-          {{ item.label }}
-        </NuxtLink>
-        <NuxtLink
-          :to="ctaTo"
-          class="inline-flex justify-center rounded-[10px] bg-wb-primary px-5 py-3 text-sm font-medium text-white"
-          @click="isMenuOpen = false"
-        >
-          {{ navbar.ctaLabel }}
-        </NuxtLink>
+    <div
+      class="grid border-[#e5e8eb] bg-white transition-[grid-template-rows] duration-300 ease-out lg:hidden"
+      :class="isMenuOpen ? 'grid-rows-[1fr] border-t' : 'grid-rows-[0fr]'"
+    >
+      <nav class="min-h-0 overflow-hidden">
+        <div class="flex flex-col gap-1 px-5 py-4">
+          <NuxtLink
+            v-for="item in navbar.navItems"
+            :key="item.label"
+            :to="item.href"
+            class="py-2.5 text-[15px] font-semibold"
+            @click="isMenuOpen = false"
+          >
+            {{ item.label }}
+          </NuxtLink>
+          <NuxtLink
+            :to="ctaTo"
+            class="mt-1 inline-flex justify-center rounded-[10px] bg-wb-primary px-5 py-3 text-sm font-medium text-white"
+            @click="isMenuOpen = false"
+          >
+            {{ navbar.ctaLabel }}
+          </NuxtLink>
+        </div>
       </nav>
     </div>
   </header>

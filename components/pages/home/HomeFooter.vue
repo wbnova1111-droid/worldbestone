@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <footer id="home-footer" class="bg-[#1c1d1d] text-white">
-    <div class="mx-auto max-w-[1920px] px-6 py-16 lg:px-[221px] lg:py-[62px]">
+    <div class="mx-auto max-w-[1920px] px-6 pb-28 pt-16 md:pb-16 lg:px-[221px] lg:py-[62px]">
       <div class="flex items-center gap-3">
         <img :src="footer.logoSrc" alt="" class="h-9 w-[46px] object-contain">
         <div class="leading-normal">

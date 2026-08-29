@@ -13,9 +13,9 @@ const isActive = (index: number) => activeIndex.value === index;
 <template>
   <section class="bg-white py-16 lg:py-[120px]">
     <div class="mx-auto flex max-w-[1920px] flex-col items-center gap-12 px-5">
-      <div class="text-center">
-        <h2 class="text-[32px] font-bold tracking-[-1px] text-wb-ink md:text-[40px]">{{ section.title }}</h2>
-        <p class="mt-5 text-[18px] font-medium tracking-[-0.6px] text-wb-slate md:text-[24px]">
+      <div v-reveal class="text-center">
+        <h2 class="break-keep text-[28px] font-bold tracking-[-1px] text-wb-ink md:text-[40px]">{{ section.title }}</h2>
+        <p class="mt-4 text-[16px] font-medium leading-[1.45] tracking-[-0.5px] text-wb-slate md:mt-5 md:text-[24px]">
           {{ section.subtitle }}
         </p>
       </div>
@@ -72,21 +72,42 @@ const isActive = (index: number) => activeIndex.value === index;
         </button>
       </div>
 
-      <div class="grid w-full gap-4 lg:hidden">
-        <article
+      <div class="flex w-full flex-col gap-3 lg:hidden">
+        <button
           v-for="(step, index) in section.steps"
           :key="`${step.number}-m-${index}`"
-          class="relative min-h-[220px] overflow-hidden rounded-[10px]"
+          type="button"
+          class="relative overflow-hidden rounded-[18px] text-left shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-[min-height] duration-500 ease-out"
+          :class="isActive(index) ? 'min-h-[340px]' : 'min-h-[92px]'"
+          @click="activeIndex = index"
         >
           <img :src="step.imageSrc" alt="" class="absolute inset-0 size-full object-cover">
-          <div class="absolute inset-0 bg-black/50" />
-          <div class="relative p-6 text-white">
-            <span class="inline-flex items-center rounded-full border border-wb-primary px-4 py-1 text-sm">{{ step.number }}</span>
-            <p class="mt-4 text-lg font-bold">{{ step.en }}</p>
-            <p class="text-2xl font-bold">{{ step.ko }}</p>
-            <p class="mt-3 text-sm font-medium">{{ step.detail }}</p>
+          <div
+            class="absolute inset-0 transition-opacity duration-500"
+            :class="isActive(index) ? 'opacity-100' : 'bg-black/55'"
+            :style="isActive(index)
+              ? 'background-image: linear-gradient(180deg, rgba(0,0,0,0.12) 18%, rgba(0,0,0,0.62) 100%);'
+              : undefined"
+          />
+          <div class="relative flex h-full min-h-[inherit] flex-col justify-between p-5 text-white">
+            <div class="flex items-center justify-between gap-3">
+              <span class="inline-flex items-center rounded-full border border-wb-primary px-3 py-0.5 text-xs">{{ step.number }}</span>
+              <span class="text-xs font-bold tracking-[-0.4px] text-white/80">{{ step.en }}</span>
+            </div>
+            <div>
+              <p class="text-[22px] font-bold leading-tight tracking-[-0.5px]">{{ step.ko }}</p>
+              <div
+                class="grid transition-[grid-template-rows] duration-300 ease-out"
+                :class="isActive(index) ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+              >
+                <div class="min-h-0 overflow-hidden">
+                  <p class="mt-3 text-[15px] font-bold leading-[1.4]">{{ step.summary }}</p>
+                  <p class="mt-2 text-[14px] font-medium leading-[1.5] text-white/90">{{ step.detail }}</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </article>
+        </button>
       </div>
     </div>
   </section>

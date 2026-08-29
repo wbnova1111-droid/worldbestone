@@ -104,25 +104,25 @@ onMounted(() => {
     <section class="relative overflow-hidden">
       <h1 class="sr-only">뻔한 병원 마케팅은 여기까지. 마케팅도 결국 감각이니까.</h1>
       <img :src="heroSrc" alt="뻔한 병원 마케팅은 여기까지. 마케팅도 결국 감각이니까." class="hidden w-full object-cover lg:block">
-      <div class="flex min-h-[70vh] flex-col items-center justify-center px-6 py-24 text-center lg:hidden">
-        <p class="text-[32px] font-bold leading-[1.4] tracking-[-1.25px] text-[#111]">
+      <div class="flex min-h-[calc(100svh-168px)] flex-col items-center justify-center px-5 pb-24 pt-10 text-center lg:hidden">
+        <p v-reveal class="mx-auto w-full max-w-[20rem] break-keep text-[24px] font-bold leading-[1.45] tracking-[-1px] text-[#111] sm:max-w-none sm:text-[32px]">
           뻔한 병원 마케팅은 여기까지.
         </p>
-        <p class="mt-2 text-[32px] font-bold leading-[1.4] tracking-[-1.25px] text-[#111]">
+        <p v-reveal="80" class="mx-auto mt-2 w-full max-w-[20rem] break-keep text-[24px] font-bold leading-[1.45] tracking-[-1px] text-[#111] sm:max-w-none sm:text-[32px]">
           <span class="text-wb-primary">마케팅</span>도 결국 <span class="text-wb-primary">감각</span>이니까.
         </p>
-        <p class="mt-16 text-[16px] font-semibold tracking-[-0.5px] text-[#505050]">
+        <p v-reveal="160" class="mt-10 w-full text-center text-[15px] font-semibold tracking-[-0.4px] text-[#505050] sm:mt-16 sm:text-[16px]">
           트렌드를 선점하는 월드베스트
         </p>
       </div>
     </section>
 
     <section class="mx-auto max-w-[1920px] lg:flex lg:items-start lg:px-[80px] xl:px-[160px]">
-      <div class="px-6 py-16 lg:sticky lg:top-[108px] lg:flex lg:h-[calc(100dvh-108px)] lg:w-[720px] lg:shrink-0 lg:flex-col lg:justify-center lg:px-[46px] lg:py-0">
-        <h2 class="text-[36px] font-extrabold leading-[1.4] tracking-[-1.8px] text-[#111] md:text-[60px]">
+      <div class="px-5 py-12 lg:sticky lg:top-[108px] lg:flex lg:h-[calc(100dvh-108px)] lg:w-[720px] lg:shrink-0 lg:flex-col lg:justify-center lg:px-[46px] lg:py-0">
+        <h2 v-reveal class="break-keep text-[28px] font-extrabold leading-[1.35] tracking-[-1.2px] text-[#111] sm:text-[36px] md:text-[60px] md:tracking-[-1.8px]">
           <span class="text-wb-primary">All In One</span> Marketing<br>Service
         </h2>
-        <p class="mt-6 text-[16px] font-medium tracking-[-0.5px] text-[#505050] md:text-[20px]">
+        <p class="mt-5 text-[15px] font-medium leading-[1.55] tracking-[-0.4px] text-[#505050] md:mt-6 md:text-[20px]">
           병원에 필요한 전문 마케팅 영역, 빠짐없이 준비되어 있습니다.
         </p>
       </div>
@@ -141,72 +141,64 @@ onMounted(() => {
         >
       </div>
 
-      <div class="flex flex-col gap-8 px-6 pb-16 lg:hidden">
-        <article
-          v-for="card in cards"
-          :key="card.title"
-          class="rounded-[20px] bg-[#f7f7fb] p-6 shadow-[0_4px_45px_rgba(0,0,0,0.06)]"
+      <div class="flex flex-col gap-5 px-5 pb-16 lg:hidden">
+        <img
+          v-for="(src, index) in cardImages"
+          :key="src"
+          v-reveal
+          :src="src"
+          :alt="cards[index]?.title?.replace(/\n/g, ' ') || '월드베스트 마케팅 서비스'"
+          class="h-auto w-full rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
+          width="1475"
+          height="1481"
+          :loading="index === 0 ? 'eager' : 'lazy'"
+          decoding="async"
         >
-          <h3 class="whitespace-pre-line text-[26px] font-extrabold leading-[1.4] tracking-[-1px] text-[#111]">
-            {{ card.title }}
-          </h3>
-          <p class="mt-4 text-[16px] font-semibold tracking-[-0.45px] text-[#111]">{{ card.subtitle }}</p>
-          <p class="mt-3 text-[15px] font-medium tracking-[-0.4px] text-[#767676]">{{ card.body }}</p>
-          <div class="mt-6 flex flex-wrap gap-2">
-            <span
-              v-for="tag in card.tags"
-              :key="tag"
-              class="rounded-[6px] bg-wb-primary px-2.5 py-1.5 text-[14px] font-medium text-white"
-            >
-              {{ tag }}
-            </span>
-          </div>
-        </article>
       </div>
     </section>
 
-    <section class="relative overflow-hidden px-6 py-20 text-center lg:px-[160px] lg:pb-28 lg:pt-16">
-      <p class="pointer-events-none select-none font-display text-[80px] font-extrabold leading-[1.4] tracking-[-7px] text-[#111]/[0.04] md:text-[180px] lg:text-[298px]">
+    <section class="relative overflow-hidden px-6 py-16 text-center lg:px-[160px] lg:pb-28 lg:pt-16">
+      <p class="pointer-events-none select-none font-display text-[64px] font-extrabold leading-[1] tracking-[-3px] text-[#111]/[0.05] md:text-[180px] md:leading-[1.4] md:tracking-[-7px] lg:text-[298px]">
         EFFECT
       </p>
-      <div class="relative -mt-16 lg:-mt-40">
-        <h2 class="text-[28px] font-bold leading-[1.4] tracking-[-1.25px] text-[#111] md:text-[50px]">
+      <div class="relative -mt-8 lg:-mt-40">
+        <h2 v-reveal class="break-keep text-[24px] font-bold leading-[1.4] tracking-[-1px] text-[#111] md:text-[50px]">
           마케팅을 <span class="text-wb-primary">월드베스트</span>에 맡기면<br>
           병원에 어떤 변화가 생길까요?
         </h2>
-        <p class="mt-6 text-[16px] font-semibold tracking-[-0.6px] text-[#111] md:text-[24px]">
+        <p v-reveal="80" class="mt-5 text-[15px] font-semibold leading-[1.55] tracking-[-0.4px] text-[#111] md:mt-6 md:text-[24px]">
           여러 채널을 따로 관리할 때와 <span class="text-wb-primary">필요한 마케팅을 함께 운영할 때</span>는 생각보다 큰 차이가 생깁니다.
         </p>
-        <div class="mt-16 grid gap-12 lg:grid-cols-3 lg:gap-[80px]">
-          <article v-for="item in effects" :key="item.number" class="flex flex-col items-center">
-            <p class="text-[24px] font-semibold tracking-[-0.6px] text-[#111]">{{ item.number }}</p>
-            <p class="mt-4 text-[24px] font-semibold tracking-[-0.6px] text-[#111]">{{ item.title }}</p>
-            <p class="mt-8 text-[48px] font-semibold tracking-[-1.5px] text-[#111] md:text-[61px]">{{ item.value }}</p>
+        <div class="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-3 lg:gap-[80px]">
+          <article v-for="(item, index) in effects" :key="item.number" v-reveal="index * 90" class="flex flex-col items-center">
+            <p class="text-[20px] font-semibold tracking-[-0.5px] text-[#111] md:text-[24px]">{{ item.number }}</p>
+            <p class="mt-3 text-[20px] font-semibold tracking-[-0.5px] text-[#111] md:mt-4 md:text-[24px]">{{ item.title }}</p>
+            <p class="mt-6 text-[44px] font-semibold tracking-[-1.5px] text-wb-primary md:mt-8 md:text-[61px] md:text-[#111]">{{ item.value }}</p>
             <p class="mt-8 max-w-[388px] whitespace-pre-line text-[16px] tracking-[-0.5px] text-[#111] md:text-[20px]">
               {{ item.body }}
             </p>
           </article>
         </div>
-        <p class="mt-16 min-h-[70px] text-[28px] font-bold tracking-[-1.25px] text-[#111] md:text-[50px]" aria-live="polite">
-          {{ typed }}
+        <p class="mt-12 min-h-[40px] text-[20px] font-bold tracking-[-0.8px] text-[#111] sm:mt-16 sm:min-h-[70px] sm:text-[28px] md:text-[50px]" aria-live="polite">
+          {{ typed }}<span class="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.08em] animate-caret bg-wb-primary align-middle" />
         </p>
       </div>
     </section>
 
-    <section class="mx-auto flex max-w-[1920px] flex-col items-center gap-10 px-6 py-16 lg:flex-row lg:justify-between lg:gap-[80px] lg:px-[160px] lg:py-24">
+    <section class="mx-auto flex max-w-[1920px] flex-col items-center gap-10 px-6 py-16 pb-28 lg:flex-row lg:justify-between lg:gap-[80px] lg:px-[160px] lg:py-24">
       <div class="w-full max-w-[728px]">
-        <h2 class="text-[36px] font-extrabold leading-[1.4] tracking-[-1.8px] text-[#111] md:text-[60px]">
+        <h2 v-reveal class="break-keep text-[26px] font-extrabold leading-[1.35] tracking-[-1.2px] text-[#111] sm:text-[36px] md:text-[60px] md:tracking-[-1.8px]">
           병원 마케팅의 모든 과정을<br>
           <span class="text-wb-primary">함께하고싶어요!</span>
         </h2>
-        <div class="mt-10 flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-          <p class="text-[18px] font-semibold leading-[1.4] tracking-[-0.6px] text-[#111] md:text-[24px]">
+        <div class="mt-8 flex flex-col items-start gap-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+          <p class="text-[16px] font-semibold leading-[1.5] tracking-[-0.4px] text-[#111] md:text-[24px]">
             여러 업체가 아닌 하나의 파트너로.<br>
             트렌디한 마케팅을 선도합니다.
           </p>
           <NuxtLink
             to="/#contact"
-            class="inline-flex shrink-0 items-center justify-center rounded-[10px] bg-wb-primary px-10 py-1.5 font-display text-[24px] font-medium leading-[56px] text-white"
+            class="inline-flex w-full shrink-0 items-center justify-center rounded-[10px] bg-wb-primary px-8 py-3.5 font-display text-[18px] font-medium text-white sm:w-auto sm:px-10 sm:py-1.5 sm:text-[24px] sm:leading-[56px]"
           >
             문의하기
           </NuxtLink>
