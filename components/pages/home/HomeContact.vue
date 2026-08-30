@@ -184,7 +184,7 @@ const onSubmit = (event: Event) => {
         </div>
 
         <template v-else>
-          <div class="mt-8 flex flex-col gap-7 px-0 min-[1800px]:px-7">
+          <div class="relative z-10 mt-8 flex flex-col gap-7 overflow-visible px-0 min-[1800px]:px-7">
             <label class="block text-[14px] font-semibold text-[#363636]">
               {{ section.hospitalName.label }} <span class="text-[#fb2c36]">*</span>
               <input
@@ -244,7 +244,7 @@ const onSubmit = (event: Event) => {
                 {{ section.source.label }}
                 <span class="font-semibold text-[#9ca3af]">{{ section.source.optionalHint }}</span>
               </p>
-              <div class="relative mt-1.5">
+              <div class="relative mt-1.5" :class="sourceOpen ? 'z-40' : ''">
                 <button
                   type="button"
                   class="flex h-[46px] w-full items-center justify-between rounded-xl border border-[#e5e8eb] bg-white px-4 py-3 text-left text-[14px] leading-5"
@@ -264,7 +264,7 @@ const onSubmit = (event: Event) => {
                 <ul
                   v-if="sourceOpen"
                   role="listbox"
-                  class="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-[#e5e8eb] bg-white py-1 shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
+                  class="absolute inset-x-0 top-full z-40 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-[#e5e8eb] bg-white py-1 shadow-[0_16px_32px_rgba(0,0,0,0.16)]"
                 >
                   <li
                     v-for="option in section.source.options"
@@ -292,10 +292,10 @@ const onSubmit = (event: Event) => {
             </a>
           </p>
 
-          <div class="relative z-50 mt-8 px-0 min-[1800px]:px-7">
+          <div class="relative z-0 mt-8 px-0 min-[1800px]:px-7">
             <button
               type="submit"
-              class="relative z-50 w-full cursor-pointer rounded-full bg-wb-primary py-4 text-[18px] font-semibold leading-[18px] text-white transition-transform active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
+              class="relative z-0 w-full cursor-pointer rounded-full bg-wb-primary py-4 text-[18px] font-semibold leading-[18px] text-white transition-transform active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
               :disabled="submitting"
             >
               {{ submitting ? '보내는 중...' : section.submitLabel }}
