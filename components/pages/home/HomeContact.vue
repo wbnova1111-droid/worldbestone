@@ -300,9 +300,6 @@ const onSubmit = (event: Event) => {
             >
               {{ submitting ? '보내는 중...' : section.submitLabel }}
             </button>
-            <p class="mt-3 text-center text-[12px] leading-[1.5] text-wb-slate">
-              전송 후 {{ INQUIRY_EMAIL }}에서 확인 메일이 오면 링크를 한 번 눌러주세요.
-            </p>
           </div>
         </template>
       </form>
