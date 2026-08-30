@@ -13,7 +13,7 @@ const toggle = (index: number) => {
 </script>
 
 <template>
-  <section class="relative z-10 bg-white">
+  <section class="relative z-0 bg-white">
     <div class="mx-auto flex max-w-[1920px] flex-col gap-10 px-5 py-16 lg:flex-row lg:justify-between lg:px-6 lg:gap-12 lg:py-[120px] lg:pl-[160px] lg:pr-[200px]">
       <div v-reveal class="max-w-[428px]">
         <h2 class="break-keep text-[28px] font-bold leading-[1.35] tracking-[-1px] text-black md:text-[40px]">

@@ -1,24 +1,43 @@
 <script setup lang="ts">
 import type { HomeContent } from '~/types/home';
-
-const CONTACT_EMAIL = 'wbnova@naver.com';
+import {
+  INQUIRY_EMAIL,
+  inquiryMailto,
+  inquiryMessage,
+  inquirySubject,
+} from '~/composables/useInquiryMail';
 
 const props = defineProps<{
   section: HomeContent['contact'];
 }>();
 
+const formRef = ref<HTMLFormElement | null>(null);
 const hospitalName = ref('');
 const applicantName = ref('');
 const phone = ref('');
 const selectedServices = ref<string[]>([]);
 const source = ref('');
 const sourceOpen = ref(false);
-const sourceWrap = ref<HTMLElement | null>(null);
 const logoVisible = ref(false);
 const logoRef = ref<HTMLElement | null>(null);
 const submitting = ref(false);
 const submitState = ref<'idle' | 'success' | 'error'>('idle');
 const errorMessage = ref('');
+const fieldError = ref('');
+const pageUrl = ref('');
+const nextUrl = ref('');
+
+const payload = computed(() => ({
+  hospitalName: hospitalName.value.trim(),
+  applicantName: applicantName.value.trim(),
+  phone: phone.value.trim(),
+  source: source.value,
+  services: selectedServices.value.join(', '),
+}));
+
+const mailtoHref = computed(() => inquiryMailto(payload.value));
+const subjectValue = computed(() => inquirySubject(payload.value));
+const messageValue = computed(() => inquiryMessage(payload.value));
 
 const selectSource = (option: string) => {
   source.value = option;
@@ -33,26 +52,40 @@ const resetForm = () => {
   source.value = '';
   submitState.value = 'idle';
   errorMessage.value = '';
+  fieldError.value = '';
 };
 
-const mailtoHref = computed(() => {
-  const lines = [
-    `병원명: ${hospitalName.value}`,
-    `성함: ${applicantName.value}`,
-    `휴대전화번호: ${phone.value}`,
-    selectedServices.value.length ? `관심 서비스: ${selectedServices.value.join(', ')}` : '',
-    `알게 된 경로: ${source.value || '미선택'}`,
-  ].filter(Boolean);
-  const subject = `[월드베스트 문의] ${hospitalName.value} / ${applicantName.value}`;
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
-});
+const validate = () => {
+  if (!hospitalName.value.trim()) return '병원명을 입력해주세요.';
+  if (!applicantName.value.trim()) return '성함을 입력해주세요.';
+  if (!phone.value.trim()) return '휴대전화번호를 입력해주세요.';
+  if (props.section.services?.length && selectedServices.value.length === 0) {
+    return '관심 서비스를 하나 이상 선택해주세요.';
+  }
+  return '';
+};
+
+const markInvalid = (message: string) => {
+  fieldError.value = message;
+  submitState.value = 'error';
+  errorMessage.value = message;
+};
 
 onMounted(() => {
-  const onPointerDown = (event: PointerEvent) => {
-    if (!sourceWrap.value?.contains(event.target as Node)) sourceOpen.value = false;
-  };
-  document.addEventListener('pointerdown', onPointerDown);
-  onUnmounted(() => document.removeEventListener('pointerdown', onPointerDown));
+  const url = new URL(window.location.href);
+  pageUrl.value = `${url.origin}${url.pathname}#contact`;
+  nextUrl.value = `${url.origin}${url.pathname}?inquiry=sent#contact`;
+
+  if (url.searchParams.get('inquiry') === 'sent') {
+    submitState.value = 'success';
+    url.searchParams.delete('inquiry');
+    url.hash = 'contact';
+    history.replaceState({}, '', `${url.pathname}${url.hash}`);
+  }
+
+  if (url.hash === '#contact') {
+    requestAnimationFrame(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
 
   if (!props.section.logoSrc || !logoRef.value) return;
   const observer = new IntersectionObserver(
@@ -65,66 +98,31 @@ onMounted(() => {
   onUnmounted(() => observer.disconnect());
 });
 
-const onSubmit = async (event: Event) => {
-  event.preventDefault();
-  if (submitting.value) return;
+const onSubmit = (event: Event) => {
+  if (submitting.value) {
+    event.preventDefault();
+    return;
+  }
+  sourceOpen.value = false;
 
-  if (props.section.services?.length && selectedServices.value.length === 0) {
-    submitState.value = 'error';
-    errorMessage.value = '관심 서비스를 하나 이상 선택해주세요.';
+  const invalid = validate();
+  if (invalid) {
+    event.preventDefault();
+    markInvalid(invalid);
     return;
   }
 
   submitting.value = true;
   submitState.value = 'idle';
   errorMessage.value = '';
-  sourceOpen.value = false;
-
-  const payload = {
-    _subject: `[월드베스트 문의] ${hospitalName.value} / ${applicantName.value}`,
-    _template: 'table',
-    _captcha: false,
-    _honey: '',
-    병원명: hospitalName.value.trim(),
-    성함: applicantName.value.trim(),
-    휴대전화번호: phone.value.trim(),
-    관심서비스: selectedServices.value.join(', ') || '선택 없음',
-    알게된경로: source.value || '미선택',
-  };
-
-  const controller = new AbortController();
-  const timer = window.setTimeout(() => controller.abort(), 12000);
-
-  try {
-    const response = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-    const result = await response.json().catch(() => ({} as { success?: boolean | string; message?: string }));
-    const ok = response.ok && (result.success === true || result.success === 'true');
-    if (!ok) {
-      throw new Error(result.message || '전송 실패');
-    }
-    submitState.value = 'success';
-  } catch {
-    submitState.value = 'error';
-    errorMessage.value = `문의 전송에 실패했습니다. 잠시 후 다시 시도하거나 ${CONTACT_EMAIL}으로 직접 보내주세요.`;
-  } finally {
-    window.clearTimeout(timer);
-    submitting.value = false;
-  }
+  fieldError.value = '';
 };
 </script>
 
 <template>
-  <section id="contact" class="relative z-20 scroll-mt-[72px] bg-white pb-28 lg:scroll-mt-[108px] lg:pb-0">
-    <div class="relative mx-auto max-w-[1920px] px-6 py-16 lg:min-h-[1111px] lg:overflow-visible lg:px-[160px] lg:py-[150px]">
-      <div v-reveal class="max-w-[658px] lg:absolute lg:left-[160px] lg:top-[150px] lg:w-[658px]">
+  <section id="contact" class="relative z-50 isolate scroll-mt-[72px] bg-white pb-28 lg:scroll-mt-[108px] lg:pb-16">
+    <div class="relative mx-auto flex max-w-[1920px] flex-col gap-10 px-6 py-16 min-[1800px]:block min-[1800px]:min-h-[1111px] min-[1800px]:px-[160px] min-[1800px]:py-[150px] lg:flex-row lg:items-start lg:justify-between">
+      <div v-reveal class="max-w-[658px] min-[1800px]:absolute min-[1800px]:left-[160px] min-[1800px]:top-[150px] min-[1800px]:w-[658px]">
         <h2 class="break-keep text-[28px] font-bold tracking-[-1px] text-black md:text-[40px]">{{ section.title }}</h2>
         <p class="mt-2 whitespace-pre-line text-[16px] font-medium leading-[1.45] tracking-[-0.5px] text-wb-slate md:text-[24px]">
           {{ section.description }}
@@ -134,29 +132,46 @@ const onSubmit = async (event: Event) => {
       <div
         v-if="section.logoSrc"
         ref="logoRef"
-        class="pointer-events-none mt-8 hidden overflow-hidden lg:absolute lg:left-[160px] lg:top-[464px] lg:mt-0 lg:block lg:h-[556px] lg:w-[710px]"
+        class="pointer-events-none hidden overflow-hidden min-[1800px]:absolute min-[1800px]:left-[160px] min-[1800px]:top-[464px] min-[1800px]:block min-[1800px]:h-[556px] min-[1800px]:w-[710px]"
       >
         <img
           :src="section.logoSrc"
           alt=""
-          class="h-auto w-[min(70%,280px)] origin-left object-contain object-left transition-[opacity,transform] duration-[1080ms] ease-out lg:h-full lg:w-full"
-          :class="logoVisible ? 'translate-x-0 opacity-25 lg:opacity-100' : '-translate-x-16 opacity-0 lg:-translate-x-[404px]'"
+          class="h-auto w-full origin-left object-contain object-left transition-[opacity,transform] duration-[1080ms] ease-out"
+          :class="logoVisible ? 'translate-x-0 opacity-100' : '-translate-x-[404px] opacity-0'"
         >
       </div>
 
       <form
-        class="relative z-30 mt-8 w-full rounded-[24px] border border-[#e5e8eb] bg-white p-5 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] sm:p-7 lg:absolute lg:left-[1000px] lg:top-[282px] lg:mt-0 lg:w-[757px] lg:px-px lg:py-[39px]"
-        @submit.prevent="onSubmit"
+        ref="formRef"
+        class="relative z-50 w-full max-w-[757px] pointer-events-auto rounded-[24px] border border-[#e5e8eb] bg-white p-5 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_8px_10px_-6px_rgba(0,0,0,0.1)] sm:p-7 min-[1800px]:absolute min-[1800px]:left-[1000px] min-[1800px]:top-[282px] min-[1800px]:mt-0 min-[1800px]:px-px min-[1800px]:py-[39px]"
+        :action="`https://formsubmit.co/${INQUIRY_EMAIL}`"
+        method="POST"
+        accept-charset="UTF-8"
+        novalidate
+        @submit="onSubmit"
       >
-        <div class="px-0 lg:px-7">
+        <input type="hidden" name="_subject" :value="subjectValue">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_honey" value="">
+        <input type="hidden" name="_url" :value="pageUrl">
+        <input type="hidden" name="_next" :value="nextUrl">
+        <input type="hidden" name="hospital" :value="hospitalName">
+        <input type="hidden" name="name" :value="applicantName">
+        <input type="hidden" name="source" :value="source || '미선택'">
+        <input type="hidden" name="services" :value="selectedServices.join(', ') || '선택 없음'">
+        <input type="hidden" name="message" :value="messageValue">
+
+        <div class="px-0 min-[1800px]:px-7">
           <p class="text-[22px] font-bold tracking-[-0.55px] text-black">{{ section.formTitle }}</p>
           <p class="mt-1 text-[14px] font-medium tracking-[-0.35px] text-wb-slate">{{ section.formSubtitle }}</p>
         </div>
 
-        <div v-if="submitState === 'success'" class="mt-10 px-0 text-center lg:px-7">
+        <div v-if="submitState === 'success'" class="mt-10 px-0 text-center min-[1800px]:px-7">
           <p class="text-[18px] font-bold tracking-[-0.45px] text-wb-primary">문의가 접수되었습니다.</p>
           <p class="mt-3 text-[14px] font-medium leading-[1.55] text-wb-slate">
-            {{ CONTACT_EMAIL }}으로 내용이 전달되었습니다.<br>
+            {{ INQUIRY_EMAIL }}으로 내용이 전달되었습니다.<br>
             평균 1 영업일 이내 담당자가 회신드립니다.
           </p>
           <button
@@ -169,7 +184,7 @@ const onSubmit = async (event: Event) => {
         </div>
 
         <template v-else>
-          <div class="mt-8 flex flex-col gap-7 px-0 lg:px-7">
+          <div class="mt-8 flex flex-col gap-7 px-0 min-[1800px]:px-7">
             <label class="block text-[14px] font-semibold text-[#363636]">
               {{ section.hospitalName.label }} <span class="text-[#fb2c36]">*</span>
               <input
@@ -179,7 +194,6 @@ const onSubmit = async (event: Event) => {
                 autocomplete="organization"
                 :placeholder="section.hospitalName.placeholder"
                 class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3 text-[14px] outline-none placeholder:text-[#363636]/40"
-                required
               >
             </label>
 
@@ -192,7 +206,6 @@ const onSubmit = async (event: Event) => {
                 autocomplete="name"
                 :placeholder="section.name.placeholder"
                 class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3.5 text-[14px] outline-none placeholder:text-[#363636]/40"
-                required
               >
             </label>
 
@@ -205,7 +218,6 @@ const onSubmit = async (event: Event) => {
                 autocomplete="tel"
                 :placeholder="section.phone.placeholder"
                 class="mt-1.5 w-full rounded-xl border border-[#e5e8eb] px-4 py-3.5 text-[14px] outline-none placeholder:text-[#363636]/40"
-                required
               >
             </label>
 
@@ -232,15 +244,14 @@ const onSubmit = async (event: Event) => {
                 {{ section.source.label }}
                 <span class="font-semibold text-[#9ca3af]">{{ section.source.optionalHint }}</span>
               </p>
-              <div id="contact-source" ref="sourceWrap" class="relative mt-1.5">
-                <input type="hidden" name="source" :value="source">
+              <div class="relative mt-1.5">
                 <button
                   type="button"
                   class="flex h-[46px] w-full items-center justify-between rounded-xl border border-[#e5e8eb] bg-white px-4 py-3 text-left text-[14px] leading-5"
                   :class="source ? 'text-[#363636]' : 'text-[rgba(54,54,54,0.4)]'"
                   :aria-expanded="sourceOpen"
                   aria-haspopup="listbox"
-                  @click="sourceOpen = !sourceOpen"
+                  @click.stop="sourceOpen = !sourceOpen"
                 >
                   <span>{{ source || section.source.placeholder }}</span>
                   <img
@@ -253,7 +264,7 @@ const onSubmit = async (event: Event) => {
                 <ul
                   v-if="sourceOpen"
                   role="listbox"
-                  class="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-[#e5e8eb] bg-white py-1 shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
+                  class="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-[#e5e8eb] bg-white py-1 shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
                 >
                   <li
                     v-for="option in section.source.options"
@@ -261,7 +272,7 @@ const onSubmit = async (event: Event) => {
                     role="option"
                     class="cursor-pointer px-4 py-2.5 text-[14px] leading-5 text-[#363636] hover:bg-[#f7f7fb]"
                     :aria-selected="source === option"
-                    @click="selectSource(option)"
+                    @click.stop="selectSource(option)"
                   >
                     {{ option }}
                   </li>
@@ -270,21 +281,28 @@ const onSubmit = async (event: Event) => {
             </div>
           </div>
 
-          <p v-if="submitState === 'error'" class="mt-6 px-0 text-[14px] font-medium leading-[1.5] text-[#fb2c36] lg:px-7">
-            {{ errorMessage }}
-            <a :href="mailtoHref" class="mt-2 block font-semibold text-wb-primary underline-offset-2 hover:underline">
+          <p v-if="fieldError || submitState === 'error'" class="mt-6 px-0 text-[14px] font-medium leading-[1.5] text-[#fb2c36] min-[1800px]:px-7">
+            {{ errorMessage || fieldError }}
+            <a
+              v-if="submitState === 'error' && !fieldError"
+              :href="mailtoHref"
+              class="mt-2 block font-semibold text-wb-primary underline-offset-2 hover:underline"
+            >
               이메일 앱으로 보내기
             </a>
           </p>
 
-          <div class="mt-8 px-0 lg:px-7">
+          <div class="relative z-50 mt-8 px-0 min-[1800px]:px-7">
             <button
               type="submit"
-              class="relative z-10 w-full cursor-pointer rounded-full bg-wb-primary py-4 text-[18px] font-semibold leading-[18px] text-white disabled:cursor-not-allowed disabled:opacity-70"
+              class="relative z-50 w-full cursor-pointer rounded-full bg-wb-primary py-4 text-[18px] font-semibold leading-[18px] text-white transition-transform active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
               :disabled="submitting"
             >
               {{ submitting ? '보내는 중...' : section.submitLabel }}
             </button>
+            <p class="mt-3 text-center text-[12px] leading-[1.5] text-wb-slate">
+              전송 후 {{ INQUIRY_EMAIL }}에서 확인 메일이 오면 링크를 한 번 눌러주세요.
+            </p>
           </div>
         </template>
       </form>

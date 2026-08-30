@@ -51,6 +51,7 @@ export default defineNuxtConfig({
         },
         { name: 'author', content: '월드베스트 WORLD BEST' },
         { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
+        { name: 'referrer', content: 'origin' },
         { name: 'theme-color', content: '#09bea3' },
         { name: 'application-name', content: 'WORLD BEST 병원 마케팅 파트너' },
         { name: 'format-detection', content: 'telephone=no' },

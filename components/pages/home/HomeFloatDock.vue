@@ -5,7 +5,7 @@ defineProps<{
   items: HomeContent['floatDock']['items'];
 }>();
 
-const overlapping = ref(false);
+const hidden = ref(false);
 
 const mobileLabel = (label: string) => {
   if (label.includes('전화')) return '전화 상담';
@@ -14,50 +14,37 @@ const mobileLabel = (label: string) => {
   return label;
 };
 
-const updateVisibility = () => {
-  const footer = document.getElementById('home-footer');
-  const contact = document.getElementById('contact');
-  const footerHidden = footer
-    ? footer.getBoundingClientRect().top < window.innerHeight - 64
-    : false;
-  const contactBox = contact?.getBoundingClientRect();
-  const contactHidden = contactBox
-    ? contactBox.top < window.innerHeight - 40 && contactBox.bottom > 80
-    : false;
-  overlapping.value = footerHidden || contactHidden;
-};
-
 onMounted(() => {
-  updateVisibility();
-  requestAnimationFrame(updateVisibility);
-  window.setTimeout(updateVisibility, 400);
-  window.addEventListener('scroll', updateVisibility, { passive: true });
-  window.addEventListener('resize', updateVisibility);
-  window.addEventListener('hashchange', updateVisibility);
-
   const contact = document.getElementById('contact');
-  const io = contact
-    ? new IntersectionObserver(() => updateVisibility(), { threshold: [0, 0.05, 0.2] })
-    : null;
-  if (contact && io) io.observe(contact);
+  const footer = document.getElementById('home-footer');
+  const seen = { contact: false, footer: false };
+  const sync = () => {
+    hidden.value = seen.contact || seen.footer;
+  };
 
-  onUnmounted(() => {
-    window.removeEventListener('scroll', updateVisibility);
-    window.removeEventListener('resize', updateVisibility);
-    window.removeEventListener('hashchange', updateVisibility);
-    io?.disconnect();
-  });
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.target.id === 'contact') seen.contact = entry.isIntersecting;
+      if (entry.target.id === 'home-footer') seen.footer = entry.isIntersecting;
+    }
+    sync();
+  }, { threshold: 0, rootMargin: '80px 0px 80px 0px' });
+
+  if (contact) io.observe(contact);
+  if (footer) io.observe(footer);
+
+  onUnmounted(() => io.disconnect());
 });
 </script>
 
 <template>
   <aside
-    class="pointer-events-none fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 md:block"
+    class="pointer-events-none fixed right-0 top-1/2 z-30 hidden -translate-y-1/2 md:block"
     aria-label="빠른 상담"
   >
     <div
-      class="pointer-events-auto flex flex-col gap-[18px] pr-4 transition-transform duration-300 ease-out will-change-transform lg:pr-6"
-      :class="overlapping ? 'translate-x-full pointer-events-none' : 'translate-x-0'"
+      class="flex flex-col gap-[18px] pr-4 transition-transform duration-300 ease-out will-change-transform lg:pr-6"
+      :class="hidden ? 'pointer-events-none translate-x-full' : 'pointer-events-auto translate-x-0'"
     >
       <a
         v-for="item in items"
@@ -76,8 +63,8 @@ onMounted(() => {
   </aside>
 
   <aside
-    class="fixed left-3 right-3 z-40 transition-transform duration-300 ease-out md:hidden"
-    :class="overlapping ? 'pointer-events-none translate-y-[calc(100%+16px)]' : 'translate-y-0'"
+    class="fixed left-3 right-3 z-30 transition-transform duration-300 ease-out md:hidden"
+    :class="hidden ? 'pointer-events-none translate-y-[calc(100%+16px)]' : 'translate-y-0'"
     :style="{ bottom: 'max(12px, env(safe-area-inset-bottom))' }"
     aria-label="빠른 상담"
   >
